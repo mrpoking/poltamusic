@@ -52,6 +52,17 @@ dialog::backdrop {background-color: var(--backgroundcolor-1);}
     outline: 3px solid var(--backgroundcolor-a);
 }
 
+.blue-border::before
+{
+    content: '';
+    position: absolute;
+
+    background: conic-gradient(var(--backgroundcolor-a) 0deg 90deg, var(--backgroundcolor-1) 90deg 360deg);
+
+    border-radius: 50%;
+    animation: rotate-gradient 4s linear infinite;
+}
+
 body
 {
     padding-top: 4.3em;

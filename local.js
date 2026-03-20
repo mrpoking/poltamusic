@@ -178,6 +178,8 @@ function deleteSong(id)
 
 playPauseButton.addEventListener('click', () => 
 {
+    playSong(index)
+
     if (audio.paused) 
     {
         audio.play()
