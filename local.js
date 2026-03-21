@@ -58,7 +58,7 @@ request.onupgradeneeded = (event) =>
     db = event.target.result
 
     if (!db.objectStoreNames.contains('songs')) {
-        db.createObjectStore('songs', { keyPath: 'id', autoIncrement: true })
+        db.createObjectStore('songs', {keyPath: 'id', autoIncrement: true})
     }
 }
 
@@ -100,43 +100,62 @@ function loadPlaylist()
     songs = []
     playButtons = []
     songItems = []
+
     playList.innerHTML = ''
 
     const transaction = db.transaction(['songs'], 'readonly')
     const store = transaction.objectStore('songs')
 
-    store.openCursor().onsuccess = (event) => {
+    store.openCursor().onsuccess = (event) => 
+    {
         const cursor = event.target.result
-        if (!cursor) return
+        if (cursor)
+        {
+            const song = cursor.value
+            songs.push(song)
+            const index = songs.length - 1
 
-        const song = cursor.value
-        songs.push(song)
-        const index = songs.length - 1
+            const li = document.createElement('li')
+            songItems.push(li)
+            const wrap = document.createElement('div')
+            wrap.className = 'wrap-wrapper'
 
-        const li = document.createElement('li')
-        songItems.push(li)
-        const wrap = document.createElement('div')
-        wrap.className = 'wrap-wrapper'
+            li.textContent = song.name
 
-        li.textContent = song.name
+            const playButton = document.createElement('button')
+            playButton.textContent = '▶︎'
+            playButton.className = 'playbutton-li'
+            playButton.onclick = () => playSong(index)
+            playButtons.push(playButton)
 
-        const deleteButton = document.createElement('button')
-        deleteButton.textContent = '✖'
-        deleteButton.className = 'deletebutton-li'
-        deleteButton.onclick = () => deleteSong(cursor.key)
+            const deleteButton = document.createElement('button')
+            deleteButton.textContent = '✖'
+            deleteButton.className = 'deletebutton-li'
+            deleteButton.onclick = () => deleteSong(cursor.key)
 
-        const playButton = document.createElement('button')
-        playButton.textContent = '▶︎'
-        playButton.className = 'playbutton-li'
-        playButton.onclick = () => playSong(index)
-        playButtons.push(playButton)
+            wrap.appendChild(playButton)
+            wrap.appendChild(deleteButton)
+            li.appendChild(wrap)
 
-        wrap.appendChild(deleteButton)
-        wrap.appendChild(playButton)
-        li.appendChild(wrap)
+            playList.appendChild(li)
+            cursor.continue()
+        }
+        else
+        {
+            const lastIndex = localStorage.getItem('lastSongIndex')
+            if (lastIndex !== null && songs.length > 0)
+            {
+                currentSongIndex = Number(lastIndex)
 
-        playList.appendChild(li)
-        cursor.continue()
+                const song = songs[currentSongIndex]
+                const blob = new Blob([song.data], {type: song.type})
+                const url = URL.createObjectURL(blob)
+
+                audio.src = url
+
+                songItems[currentSongIndex]?.classList.add('active')
+            }
+        }
     }
 }
 
@@ -152,6 +171,8 @@ function playSong(index)
     currentSongIndex = index
     playPauseButton.textContent = '❚❚'
 
+    localStorage.setItem('lastSongIndex', index)
+
     playButtons.forEach(btn => btn.textContent = '▶︎')
     if (playButtons[index])
         playButtons[index].textContent = '❚❚'
@@ -163,22 +184,25 @@ function playSong(index)
 
 function deleteSong(id) 
 {
-    event.stopPropagation()
+    e.stopPropagation()
+    deleteSong(cursor.key)
 
     const transaction = db.transaction(['songs'], 'readwrite')
     const store = transaction.objectStore('songs')
 
-    if (confirm('Delete This Song?!'))
-    {
+    if (confirm('Delete This Song?'))
         store.delete(id)
-    }
 
     transaction.oncomplete = () => loadPlaylist()
 }
 
 playPauseButton.addEventListener('click', () => 
 {
-    playSong(index)
+    if (currentSongIndex === -1)
+    {
+        if (songs.length > 0) playSong(0)
+        return
+    }
 
     if (audio.paused) 
     {
