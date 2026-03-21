@@ -74,23 +74,38 @@ fileInput.addEventListener('change', (event) =>
 
 function saveSong(file) 
 {
-    const reader = new FileReader()
-
-    reader.onload = function (e) 
+    return new Promise(resolve => 
     {
-        const transaction = db.transaction(['songs'], 'readwrite')
-        const store = transaction.objectStore('songs')
+        const reader = new FileReader()
 
-        store.add ({
-            name: file.name,
-            data: e.target.result,
-            type: file.type
-        })
+        reader.onload = function (e) 
+        {
+            const transaction = db.transaction(['songs'], 'readwrite')
+            const store = transaction.objectStore('songs')
 
-        transaction.oncomplete = () => loadPlaylist()
-    }
+            const checkRequest = store.getAll()
+            checkRequest.onsuccess = function ()
+            {
+                const exists = checkRequest.result.some(song => song.name === file.name)
+                if (exists)
+                {
+                    console.log('Duplicated Skipped', file.name)
+                    resolve()
+                    return
+                }
 
-    reader.readAsArrayBuffer(file)
+                store.add ({
+                    name: file.name,
+                    data: e.target.result,
+                    type: file.type
+                })
+
+                transaction.oncomplete = resolve
+            }
+        }
+
+        reader.readAsArrayBuffer(file)
+    })
 }
 
 function loadPlaylist() 
