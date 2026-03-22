@@ -12,6 +12,7 @@
     justify-content: space-between;
     align-items: center;
     position: fixed;
+    z-index: 1;
 }
 
     .navbar-left
@@ -57,7 +58,7 @@
             outline: none;
             background-color: var(--backgroundcolor-1);
             cursor: pointer;
-            &:hover{background-color: var(--backgroundcolor-2);}
+            &:hover{background-color: var(--backgroundcolor-3);}
         }
 
         .addmusic-button
@@ -73,7 +74,7 @@
             background-color: var(--backgroundcolor-1);
             cursor: pointer;
             overflow: hidden;
-            &:hover{background-color: var(--backgroundcolor-2);}
+            &:hover{background-color: var(--backgroundcolor-3);}
         }
 
 .sidebar
@@ -155,6 +156,10 @@
             flex-wrap: wrap;
             word-break: break-all;
             justify-content: space-between;
+            cursor: pointer;
+            position: relative;
+            
+            &:hover{background-color: var(--backgroundcolor-2);}
         }
 
             .wrap-wrapper
@@ -166,10 +171,10 @@
 
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
+                flex-direction: row-reverse;
             }
 
-                .playbutton-li, .deletebutton-li
+                .deletebutton-li
                 {
                     padding: 0.6em; 
 
@@ -177,7 +182,7 @@
                     outline: none;
 
                     width: 5em;
-                    height: fit-content;
+                    height: 2.5em;
 
                     color: var(--textcolor-2);
 

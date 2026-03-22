@@ -11,6 +11,7 @@ input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration {display: none; -webkit-appearance: none; appearance: none;}
 input::placeholder {color: var(--fontcolor-2);}
+
 input[type="range"] 
 {
     width: 100%;
@@ -35,7 +36,6 @@ input[type="range"]::-webkit-slider-thumb
     margin-top: -0.37em;
     transition: background 0.3s;
 }
-
 audio {display: none;}
 
 dialog::backdrop {background-color: var(--backgroundcolor-1);}
@@ -46,8 +46,9 @@ dialog::backdrop {background-color: var(--backgroundcolor-1);}
 .blue-border 
 {
     color: var(--textcolor-3);
-    border: 1px solid var(--backgroundcolor-1); 
-    outline: 3px solid var(--backgroundcolor-a);
+    border: none;
+    outline: 3px solid var(--backgroundcolor-a); 
+    &:hover{outline: 3px solid var(--backgroundcolor-b); }
 }
 
 .blue-border::before

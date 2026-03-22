@@ -42,8 +42,9 @@ const playList = document.getElementById('playList')
 
 let songs = []
 let currentSongIndex = -1
-let playButtons = []
 let songItems = []
+
+let currentAudioURL = null
 
 let db
 const request = indexedDB.open('MusicDB', 1)
@@ -66,10 +67,13 @@ request.onsuccess = (event) =>
     loadPlaylist()
 }
 
-fileInput.addEventListener('change', (event) => 
+fileInput.addEventListener('change', async (event) => 
 {
     const files = event.target.files
-    for (let file of files) saveSong(file)
+    for (let file of files) 
+        saveSong(file)
+
+    loadPlaylist()
 })
 
 function saveSong(file) 
@@ -111,7 +115,6 @@ function saveSong(file)
 function loadPlaylist() 
 {
     songs = []
-    playButtons = []
     songItems = []
 
     playList.innerHTML = ''
@@ -129,24 +132,18 @@ function loadPlaylist()
             const index = songs.length - 1
 
             const li = document.createElement('li')
+            li.addEventListener('click', () => playSong(index))
+            li.textContent = song.name
             songItems.push(li)
+
             const wrap = document.createElement('div')
             wrap.className = 'wrap-wrapper'
-
-            li.textContent = song.name
-
-            const playButton = document.createElement('button')
-            playButton.textContent = '▶︎'
-            playButton.className = 'playbutton-li'
-            playButton.onclick = () => playSong(index)
-            playButtons.push(playButton)
 
             const deleteButton = document.createElement('button')
             deleteButton.textContent = '✖'
             deleteButton.className = 'deletebutton-li'
-            deleteButton.onclick = () => deleteSong(cursor.key)
+            deleteButton.onclick = (e) => deleteSong(e, song.id)
 
-            wrap.appendChild(playButton)
             wrap.appendChild(deleteButton)
             li.appendChild(wrap)
 
@@ -156,20 +153,28 @@ function loadPlaylist()
 
         else
         {
-            const lastIndex = localStorage.getItem('lastSongIndex')
-            if (lastIndex !== null && songs.length > 0)
-            {
-                currentSongIndex = Number(lastIndex)
-
-                const song = songs[currentSongIndex]
-                const blob = new Blob([song.data], {type: song.type})
-                const url = URL.createObjectURL(blob)
-
-                audio.src = url
-
-                songItems[currentSongIndex]?.classList.add('blue-border')
-            }
+            restoreLastSong()
         }
+    }
+}
+
+function restoreLastSong() 
+{
+    const lastIndex = localStorage.getItem('lastSongIndex')
+    if (lastIndex !== null && songs.length > 0)
+    {
+        currentSongIndex = Number(lastIndex)
+
+        const song = songs[currentSongIndex]
+        const blob = new Blob([song.data], {type: song.type})
+
+        if (currentAudioURL)
+            URL.revokeObjectURL(currentAudioURL)
+
+        currentAudioURL = URL.createObjectURL(blob)
+        audio.src = currentAudioURL
+
+        songItems[currentSongIndex]?.classList.add('blue-border')
     }
 }
 
@@ -177,47 +182,50 @@ function playSong(index)
 {
     const song = songs[index]
     const blob = new Blob([song.data], {type: song.type})
-    const url = URL.createObjectURL(blob)
 
-    audio.src = url
+    if (currentAudioURL)
+        URL.revokeObjectURL(currentAudioURL)
+
+    currentAudioURL = URL.createObjectURL(blob)
+
+    audio.src = currentAudioURL
     audio.play()
 
     currentSongIndex = index
     playPauseButton.textContent = '❚❚'
 
-    localStorage.setItem('lastSongIndex', index)
+    document.title = song.name
 
-    playButtons.forEach(btn => btn.textContent = '▶︎')
-    if (playButtons[index])
-        playButtons[index].textContent = '❚❚'
+    localStorage.setItem('lastSongIndex', index)
 
     songItems.forEach(item => item.classList.remove('blue-border'))
     if (songItems[index])
         songItems[index].classList.add('blue-border')
 
     const savedVolume = localStorage.getItem('volume_song_' + song.id)
-    if (savedVolume)
-    {
-        audio.volume = savedVolume
-        volumeBar.value = savedVolume
-    }
+    const globalVolume = localStorage.getItem('volumeLevel') || 0.7
 
-    else
-    {
-        const globalVolume = localStorage.getItem('volume_global') || 0.7
-        audio.volume = globalVolume
-        volumeBar.value = globalVolume
-    }
+    const volume = savedVolume ? Number(savedVolume) : Number(globalVolume)
+
+    audio.volume = Math.max(0, Math.min(1, volume))
+    volumeBar.value = audio.volume * 13
 }
 
-function deleteSong(id) 
+function deleteSong(event, id) 
 {
-    event.stopPropagation()
+    event.preventDefault()
+
+    if (songs[currentSongIndex]?.id === id)
+    {
+        audio.pause()
+        audio.src = ''
+        currentSongIndex = -1
+    }
 
     const transaction = db.transaction(['songs'], 'readwrite')
     const store = transaction.objectStore('songs')
 
-    if (confirm('Delete This Song?'))
+    if (confirm('Delete This Song?')) 
         store.delete(id)
 
     transaction.oncomplete = () => loadPlaylist()
@@ -225,30 +233,16 @@ function deleteSong(id)
 
 playPauseButton.addEventListener('click', () => 
 {
-    if (currentSongIndex === -1)
-    {
-        if (songs.length > 0) playSong(0)
-        return
-    }
-
     if (audio.paused) 
     {
         audio.play()
         playPauseButton.textContent = '❚❚'
-        
-        playButtons.forEach(btn => btn.textContent = '▶︎')
-        if (playButtons[currentSongIndex])
-            playButtons[currentSongIndex].textContent = '❚❚'
     } 
 
     else 
     {
         audio.pause()
         playPauseButton.textContent = '▶︎'
-        
-        playButtons.forEach(btn => btn.textContent = '❚❚')
-        if (playButtons[currentSongIndex])
-            playButtons[currentSongIndex].textContent = '▶︎'
     }
 })
 
@@ -275,26 +269,27 @@ seekBar.addEventListener('input', () =>
 })
 
 const savedVolume = localStorage.getItem('volumeLevel')
-if (savedVolume) 
-{
-    volumeBar.value = savedVolume
-}
+const volume = savedVolume ? Number(savedVolume) : 0.3
 
-else
-{
-    volumeBar.value = 0.7
-}
+audio.volume = Math.max(0, Math.min(1, volume))
+volumeBar.value = audio.volume * 10
 
 volumeBar.addEventListener('input', () => 
 {
-    const currentValue = volumeBar.value;
+    const raw = Number(volumeBar.value)
+    const value = Math.max(0, Math.min(1, raw / 10))
 
     if (currentSongIndex !== -1)
     {
         const song = songs[currentSongIndex]
-        localStorage.setItem('volume_song_' + song.id, currentValue)
+        localStorage.setItem('volume_song_' + song.id, value)
     }
 
-    localStorage.setItem('volumeLevel', currentValue);
-    audio.volume = currentValue;
+    localStorage.setItem('volumeLevel', value);
+    audio.volume = value;
+})
+
+audio.addEventListener('error', (e) => 
+{
+    console.log('Audio Error:', e)
 })
