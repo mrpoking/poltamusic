@@ -54,7 +54,7 @@ function saveSong(file)
         
         const checkRequest = store.getAll()
 
-        checkRequest.onsuccess = () =>
+        checkRequest.onsuccess = async () =>
         {
             if (checkRequest.result.some(s => s.name === file.name))
                 return resolve()
@@ -62,7 +62,7 @@ function saveSong(file)
             store.add ({
                 name: file.name,
                 data: file,
-                type: file.type
+                type: file.type,
             })
 
             tx.oncomplete = resolve
@@ -96,10 +96,11 @@ function loadPlaylist()
             songs.push ({
                 id: song.id, 
                 name: song.name,
-                type: song.type
+                type: song.type,
             })
 
             const li = document.createElement('li')
+
             li.textContent = song.name.replace(/\.(mp3|mp4)$/i, '')
             li.onclick = () => playSongById(song.id)
 
@@ -236,6 +237,7 @@ async function playSong(index)
         songItems[index].classList.add('blue-border')
 
     preloadNext()
+    updateUI()
 }
 
 function preloadNext()
@@ -415,6 +417,31 @@ function updateUI()
 
     if (songItems[currentSongIndex])
         songItems[currentSongIndex].classList.add('blue-border')
+
+    if ('mediaSession' in navigator) 
+    {
+        navigator.mediaSession.setActionHandler('previoustrack', () => 
+        {
+            previousButton.click();
+        })
+
+        navigator.mediaSession.setActionHandler('nexttrack', () => 
+        {
+            nextButton.click();
+        })
+
+        navigator.mediaSession.setActionHandler('play', () => 
+        {
+            audio.play();
+            playPauseButton.textContent = '❚❚';
+        })
+
+        navigator.mediaSession.setActionHandler('pause', () => 
+        {
+            audio.pause();
+            playPauseButton.textContent = '▶︎';
+        })
+    }
 }
 
 audio.addEventListener('timeupdate', () => 

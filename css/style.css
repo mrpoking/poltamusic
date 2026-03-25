@@ -28,10 +28,10 @@
             padding: 0.6em;
             width: 100%;
             height: 100%;
-            border: none;
+            border: 1px solid var(--backgroundcolor-3);
             outline: none;
             border-radius: var(--borderradius-square);
-            background-color: var(--backgroundcolor-2);
+            background-color: var(--backgroundcolor-1);
             font-size: 1.2em;
             color: var(--textcolor-4);
         }
@@ -131,7 +131,7 @@
         max-width: 15em;
         height: fit-content;
         border-radius: var(--borderradius-square);
-        background-color: color-mix(in oklch, var(--backgroundcolor-2) 45%, transparent);
+        background-color: color-mix(in oklch, var(--backgroundcolor-2) 60%, transparent);
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
@@ -169,7 +169,7 @@
                 outline: none;
                 height: 2.5em;
                 width: 100%;
-                max-width: 5em;
+                max-width: 5.5em;
                 color: var(--textcolor-3);
                 border-radius: var(--borderradius-square);
                 background-color: var(--backgroundcolor-3);
