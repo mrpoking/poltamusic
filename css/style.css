@@ -86,12 +86,12 @@
             border-radius: var(--borderradius-circle);
             border: none;
             outline: none;
-            background-color: var(--backgroundcolor-1);
+            background-color: var(--backgroundcolor-2);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            &:hover{background-color: var(--backgroundcolor-2);}
+            &:hover{background-color: var(--backgroundcolor-3);}
         }
 
             .darkmode-trackupload-icon
