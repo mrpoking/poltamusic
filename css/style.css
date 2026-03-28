@@ -173,9 +173,9 @@
 
             .drag-handle 
             {
-                width: 1.6em;
+                width: 1.8em;
                 aspect-ratio: 1/1;
-                border-radius: var(--borderradius-circle);
+                border-radius: var(--borderradius-square);
                 cursor: grab;
                 opacity: 1;
                 z-index: 1;
@@ -190,6 +190,11 @@
             {
                 cursor: grabbing;
                 opacity: 1;
+            }
+
+            .drag-handle:hover
+            {
+                background-color: var(--backgroundcolor-3);
             }
 
                 .lightmode-grab-icon
