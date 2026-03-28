@@ -1,0 +1,431 @@
+.navbar
+{
+    top: 0;
+    left: 0;
+    padding: 0.6em;
+    gap: 0.6em;
+    width: 100%;
+    height: 4em;
+    background-color: var(--backgroundcolor-1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    z-index: 1;
+}
+
+    .navbar-left
+    {
+        width: fit-content;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .search-track-bar
+        {
+            padding: 0.6em;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--backgroundcolor-3);
+            outline: none;
+            border-radius: var(--borderradius-square);
+            background-color: var(--backgroundcolor-1);
+            font-size: 1.2em;
+            font-family: sans-serif;
+            color: var(--textcolor-4);
+        }
+
+    .navbar-right
+    {
+        gap: 0.6em;
+        width: fit-content;
+        height: 100%;
+        display: flex;
+    }
+
+        .theme-button
+        {
+            padding: 1em;
+            height: 100%;
+            aspect-ratio: 1/1;
+            border-radius: var(--borderradius-circle);
+            border: none;
+            outline: none;
+            background-color: var(--backgroundcolor-1);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-button:hover
+        {
+            background-color: var(--backgroundcolor-2);
+        }
+
+            .lightmode-theme-icon
+            {
+                height: 100%;
+                aspect-ratio: 1/1;
+                background-color: var(--textcolor-4);
+                -webkit-mask: url(../image/sunIcon.svg) no-repeat center / contain;
+                mask: url(../image/sunIcon.svg) no-repeat center / contain;
+            }
+
+            .darkmode-theme-icon
+            {
+                height: 100%;
+                aspect-ratio: 1/1;
+                background-color: var(--textcolor-4);
+                -webkit-mask: url(../image/moonIcon.svg) no-repeat center / contain;
+                mask: url(../image/moonIcon.svg) no-repeat center / contain;
+            }
+
+        .upload-track-button
+        {
+            padding: 1em;
+            height: 100%;
+            aspect-ratio: 1/1;
+            border-radius: var(--borderradius-circle);
+            border: none;
+            outline: none;
+            background-color: var(--backgroundcolor-2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upload-track-button:hover
+        {
+            background-color: var(--backgroundcolor-3);
+        }
+
+            .lightmode-upload-track-icon
+            {
+                height: 100%;
+                aspect-ratio: 1/1;
+                background-color: var(--textcolor-4);
+                -webkit-mask: url(../image/uploadIcon.svg) no-repeat center / contain;
+                mask: url(../image/uploadIcon.svg) no-repeat center / contain;
+            }
+
+            .darkmode-upload-track-icon
+            {
+                height: 100%;
+                aspect-ratio: 1/1;
+                background-color: var(--textcolor-4);
+                -webkit-mask: url(../image/uploadIcon.svg) no-repeat center / contain;
+                mask: url(../image/uploadIcon.svg) no-repeat center / contain;
+            }
+
+.sidebar
+{
+    padding: 0 0.6em 0.6em 0.6em;
+    gap: 0.6em;
+    width: 100%;
+    height: calc(100% - 4em);
+    color: var(--textcolor-4);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+    .user-controls-layout
+    {
+        padding: 0.6em;
+        gap: 0.6em;
+        width: 100%;
+        max-width: 15em;
+        height: fit-content;
+        border-radius: var(--borderradius-square);
+        background-color: color-mix(in oklch, var(--backgroundcolor-2) 60%, transparent);
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: center;
+        position: fixed;
+        top: 4em;
+        left: 0;
+        z-index: 1;
+        box-shadow: 0 0.25em 0.6em rgba(0,0,0,0.25);
+        -webkit-backdrop-filter: blur(0.3em);
+        backdrop-filter: blur(0.3em);
+        touch-action: none;
+        overflow: hidden;
+    }
+
+    .user-controls-layout:active
+    {
+        cursor: grabbing;
+    }
+
+        .user-controls-layout-top
+        {
+            width: 100%;
+            height: fit-content;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .drag-handle 
+            {
+                width: 1.8em;
+                aspect-ratio: 1/1;
+                border-radius: var(--borderradius-square);
+                cursor: grab;
+                opacity: 1;
+                z-index: 1;
+                align-self: end;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .drag-handle:active 
+            {
+                cursor: grabbing;
+                opacity: 1;
+            }
+
+            .drag-handle:hover
+            {
+                background-color: var(--backgroundcolor-3);
+            }
+
+                .lightmode-grab-icon
+                {
+                    width: 100%;
+                    aspect-ratio: 1/1;
+                    background-color: var(--textcolor-4);
+                    -webkit-mask: url(../image/grabIcon.svg) no-repeat center / contain;
+                    mask: url(../image/grabIcon.svg) no-repeat center / contain;
+                }
+
+                .darkmode-grab-icon
+                {
+                    height: 100%;
+                    aspect-ratio: 1/1;
+                    background-color: var(--textcolor-4);
+                    -webkit-mask: url(../image/grabIcon.svg) no-repeat center / contain;
+                    mask: url(../image/grabIcon.svg) no-repeat center / contain;
+                }
+
+            .track-name-container
+            {
+                width: 100%;
+                height: fit-content;
+                display: flex;
+                overflow: hidden;
+            }
+
+                .track-name-wrapper
+                {
+                    width: fit-content;
+                    display: inline-block;
+                    white-space: nowrap;
+                    color: var(--textcolor-3);
+                    animation: scroll-left 50s linear infinite;
+                }
+
+                .track-name-wrapper::after
+                {
+                    content: " ";
+                    display: inline-block;
+                    white-space: nowrap;
+                    padding-left: 3em;
+                    animation: scroll-left 3s linear infinite;
+                    animation-delay: -3s;
+                    overflow: hidden;
+                }
+
+                .track-name-wrapper:hover
+                {
+                    animation-play-state: paused;
+                }
+
+                .track-name-wrapper:hover::after
+                {
+                    animation-play-state: paused;
+                }
+
+                @keyframes scroll-left
+                {
+                    0% { transform: translateX(0); }
+                    50% { transform: translateX(-100%); }
+                    50.01% { transform: translateX(100%); }
+                    100% { transform: translateX(0); }
+                }
+
+        .user-controls-layout-center
+        {
+            gap: 0.6em;
+            width: 100%;
+            height: fit-content;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .control-previous-button, .control-next-button
+            {
+                padding: 0.6em; 
+                border: none;
+                outline: none;
+                height: 2.5em;
+                width: 100%;
+                max-width: 5.5em;
+                color: var(--textcolor-3);
+                border-radius: var(--borderradius-square);
+                background-color: var(--backgroundcolor-3);
+                cursor: pointer;
+            }
+
+            .control-previous-button:hover,
+            .control-next-button:hover
+            {
+                background-color: var(--backgroundcolor-4);
+            }
+
+            .play-pause-button
+            {
+                padding: 0.6em; 
+                border: none;
+                outline: none;
+                width: 5em;
+                height: 2.5em;
+                color: var(--textcolor-3);
+                border-radius: var(--borderradius-square);
+                background-color: var(--backgroundcolor-3);
+                cursor: pointer;
+            }
+
+            .play-pause-button:hover
+            {
+                background-color: var(--backgroundcolor-4);
+            }
+
+        .user-controls-layout-bottom
+        {
+            padding: 0.4em 0 0.2em 0;
+            gap: 1.2em;
+            width: 100%;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+            #volumeBar, #seekBar
+            {
+                -webkit-appearance: none;
+                appearance: none;
+                background: var(--backgroundcolor-3);
+                border-radius: var(--borderradius-square);
+                outline: none;
+            }
+
+            #volumeBar::-webkit-slider-thumb, #seekBar::-webkit-slider-thumb
+            {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 1.2em;
+                height: 1.2em;
+                background: var(--backgroundcolor-a);
+                border-radius: var(--borderradius-square);
+                cursor: pointer;
+                border: none;
+            }
+
+            #volumeBar::-moz-range-thumb, #seekBar::-moz-range-thumb 
+            {
+                background: var(--backgroundcolor-a);
+                border-radius: 50%;
+                cursor: pointer;
+                border: none;
+            }
+
+            #volumeBar::-ms-thumb, #seekBar::-ms-thumb 
+            {
+                background: var(--backgroundcolor-a);
+                border-radius: 50%;
+                cursor: pointer;
+                border: none;
+            }
+
+    .user-playlist-layout
+    {
+        gap: 0.6em;
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+        .no-results-layout
+        {
+            color: var(--textcolor-4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        li
+        {
+            padding: 0.6em;
+            gap: 0.6em;
+            width: 100%;
+            max-width: 35em;
+            color: var(--textcolor-4);
+            border-radius: var(--borderradius-square);
+            background-color: color-mix(in oklch, var(--backgroundcolor-2) 60%, transparent);
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            word-break: break-all;
+            justify-content: space-between;
+            cursor: pointer;
+            position: relative;
+        }
+
+        @supports (background-color: color-mix(in oklch, var(--backgroundcolor-3) 60%, transparent)) 
+        {
+            li:hover 
+            {
+                background-color: color-mix(in oklch, var(--backgroundcolor-3) 60%, transparent);
+            }
+        }
+
+            .delete-button-wrapper
+            {
+                gap: 0.6em;
+                width: 100%;
+                height: fit-content;
+                display: flex;
+                align-items: center;
+                flex-direction: row-reverse;
+            }
+
+                .delete-button
+                {
+                    padding: 0.6em; 
+                    border: none;
+                    outline: none;
+                    width: 5em;
+                    height: 2.5em;
+                    color: var(--textcolor-a);
+                    border-radius: var(--borderradius-square);
+                    background-color: var(--backgroundcolor-a);
+                    cursor: pointer;
+                }
+
+                .delete-button:hover
+                {
+                    background-color: var(--backgroundcolor-b);
+                }
