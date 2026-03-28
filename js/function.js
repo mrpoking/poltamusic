@@ -5,7 +5,8 @@ noResultsLayout.classList.add('no-results-layout')
 noResultsLayout.textContent = 'No Results...'
 noResultsLayout.style.display = 'none'
 
-const {
+const 
+{
     searchTrackBar,
     userPlaylist,
     audioFromTrack,
@@ -14,7 +15,8 @@ const {
     seekBar,
 } = dom
 
-export function loadPlaylist() {
+export function loadPlaylist() 
+{
     store.isPlaylistLoaded = false
     store.userInteractedEarly = false
     searchTrackBar.value = ''
@@ -31,11 +33,13 @@ export function loadPlaylist() {
     const tx = store.playlistDB.transaction('tracks', 'readonly')
     const trackStore = tx.objectStore('tracks')
 
-    trackStore.openCursor().onsuccess = event => {
+    trackStore.openCursor().onsuccess = event => 
+    {
         const cursor = event.target.result
-        if (cursor) {
+        if (cursor) 
+        {
             const track = cursor.value
-            store.tracks.push({
+            store.tracks.push ({
                 id: track.id,
                 name: track.name.replace(/\.(mp3|mp4)$/i, ''),
                 type: track.type,
@@ -58,12 +62,16 @@ export function loadPlaylist() {
 
             userPlaylist.appendChild(li)
             store.trackMetadata.push(li)
-            cursor.continue()
-        } else {
+            cursor.continue()  
+        } 
+        
+        else 
+        {
             restoreLastSong()
             store.isPlaylistLoaded = true
 
-            if (searchTrackBar.value.length > 0) {
+            if (searchTrackBar.value.length > 0) 
+            {
                 const inputEvent = new Event('input')
                 searchTrackBar.dispatchEvent(inputEvent)
             }
@@ -71,17 +79,20 @@ export function loadPlaylist() {
     }
 }
 
-export function saveSong(file) {
-    return new Promise(resolve => {
+export function saveSong(file) 
+{
+    return new Promise(resolve => 
+    {
         const tx = store.playlistDB.transaction('tracks', 'readwrite')
         const trackStore = tx.objectStore('tracks')
         const checkRequest = trackStore.getAll()
 
-        checkRequest.onsuccess = () => {
+        checkRequest.onsuccess = () => 
+        {
             if (checkRequest.result.some(s => s.name === file.name))
                 return resolve()
 
-            trackStore.add({
+            trackStore.add ({
                 name: file.name,
                 data: file,
                 type: file.type,
@@ -92,8 +103,10 @@ export function saveSong(file) {
     })
 }
 
-export function getSongData(id) {
-    return new Promise(resolve => {
+export function getSongData(id) 
+{
+    return new Promise(resolve => 
+    {
         const tx = store.playlistDB.transaction('tracks', 'readonly')
         const trackStore = tx.objectStore('tracks')
         const request = trackStore.get(id)
@@ -103,44 +116,58 @@ export function getSongData(id) {
     })
 }
 
-export function playSongById(id) {
+export function playSongById(id) 
+{
     store.userInteractedEarly = true
+
     const index = store.tracks.findIndex(t => t.id === id)
-    if (index !== -1) {
+    if (index !== -1) 
+    {
         playSong(index)
         console.log('Playing:', store.tracks[index].name)
     }
 }
 
-export function restoreLastSong() {
-    if (store.userInteractedEarly) return
+export function restoreLastSong() 
+{
+    if (store.userInteractedEarly) 
+        return
+
     const savedIndex = Number(localStorage.getItem('lastSongIndex'))
     if (!Number.isNaN(savedIndex) && savedIndex >= 0 && savedIndex < store.tracks.length)
         playSong(savedIndex)
 }
 
-export async function playSong(index) {
+export async function playSong(index) 
+{
     const token = ++store.loadToken
     const meta = store.tracks[index]
-    if (!meta) return
+
+    if (!meta) 
+        return
 
     audioFromTrack.pause()
     audioFromTrack.removeAttribute('src')
     audioFromTrack.load()
 
-    if (token !== store.loadToken) return
+    if (token !== store.loadToken) 
+        return
 
     const track = await getSongData(meta.id)
-    if (!track?.data) {
+    if (!track?.data) 
+    {
         console.log('Invalid Audio Data')
         return
     }
 
-    if (store.currentTrackURL) URL.revokeObjectURL(store.currentTrackURL)
+    if (store.currentTrackURL) 
+        URL.revokeObjectURL(store.currentTrackURL)
 
     const blob = track.data instanceof Blob ? track.data : new Blob([track.data], { type: meta.type })
     const savedSeek = Number(localStorage.getItem('seek_track_' + meta.id))
-    if (!Number.isNaN(savedSeek)) audioFromTrack.currentTime = savedSeek
+
+    if (!Number.isNaN(savedSeek)) 
+        audioFromTrack.currentTime = savedSeek
 
     store.currentTrackURL = URL.createObjectURL(blob)
     audioFromTrack.src = store.currentTrackURL
@@ -150,11 +177,15 @@ export async function playSong(index) {
     playPauseTrackButton.textContent = '❚❚'
 
     const savedVolumeStr = localStorage.getItem('volume_track_' + meta.id)
-    if (savedVolumeStr === null) {
+    if (savedVolumeStr === null) 
+    {
         const globalVolume = Number(localStorage.getItem('volumeLevel')) || 0.5
         audioFromTrack.volume = globalVolume
         volumeBar.value = globalVolume * 10
-    } else {
+    } 
+    
+    else 
+    {
         const savedSongVolume = Number(savedVolumeStr)
         audioFromTrack.volume = savedSongVolume
         volumeBar.value = savedSongVolume * 10
@@ -166,53 +197,69 @@ export async function playSong(index) {
     localStorage.setItem('lastSongIndex', index)
 
     store.trackMetadata.forEach(item => item.classList.remove('active-track'))
-    if (store.trackMetadata[index]) store.trackMetadata[index].classList.add('active-track')
+    if (store.trackMetadata[index]) 
+        store.trackMetadata[index].classList.add('active-track')
 
     preloadNext()
     updateUI()
 }
 
-export function preloadNext() {
+export function preloadNext() 
+{
     const token = ++store.preloadToken
-    if (store.tracks.length < 2) return
+    if (store.tracks.length < 2) 
+        return
 
     const nextIndex = (store.currentTrackIndex + 1) % store.tracks.length
     const nextMeta = store.tracks[nextIndex]
 
-    getSongData(nextMeta.id).then(track => {
-        if (token !== store.preloadToken || !track?.data) return
+    getSongData(nextMeta.id).then(track => 
+    {
+        if (token !== store.preloadToken || !track?.data) 
+            return
 
-        if (store.nextTrackURL) URL.revokeObjectURL(store.nextTrackURL)
+        if (store.nextTrackURL) 
+            URL.revokeObjectURL(store.nextTrackURL)
 
-        try {
+        try 
+        {
             const blob = track.data instanceof Blob ? track.data : new Blob([track.data], { type: nextMeta.type })
             store.nextTrackURL = URL.createObjectURL(blob)
-        } catch (error) {
+        } 
+        
+        catch (error) 
+        {
             console.error('Preload Error:', error)
             store.nextTrackURL = null
         }
     })
 }
 
-export function deleteSong(event, id) {
+export function deleteSong(event, id) 
+{
     event.stopPropagation()
 
     const indexToDelete = store.tracks.findIndex(t => t.id === id)
-    if (indexToDelete === -1) return
+    if (indexToDelete === -1) 
+        return
 
     const isCurrent = indexToDelete === store.currentTrackIndex
-    if (!confirm('Delete This Song?')) return
+    if (!confirm('Delete This Song?'))
+        return
 
     const tx = store.playlistDB.transaction('tracks', 'readwrite')
     tx.objectStore('tracks').delete(id)
 
-    tx.oncomplete = () => {
-        if (store.currentTrackURL) {
+    tx.oncomplete = () => 
+    {
+        if (store.currentTrackURL) 
+        {
             URL.revokeObjectURL(store.currentTrackURL)
             store.currentTrackURL = null
         }
 
-        if (store.nextTrackURL) {
+        if (store.nextTrackURL) 
+        {
             URL.revokeObjectURL(store.nextTrackURL)
             store.nextTrackURL = null
         }
@@ -221,7 +268,10 @@ export function deleteSong(event, id) {
             const nextIndex = indexToDelete >= store.tracks.length - 1 ? 0 : indexToDelete
             loadPlaylist()
             setTimeout(() => playSong(nextIndex), 50)
-        } else {
+        } 
+        
+        else 
+        {
             audioFromTrack.pause()
             audioFromTrack.src = ''
             store.currentTrackIndex = -1
@@ -230,36 +280,76 @@ export function deleteSong(event, id) {
     }
 }
 
-export function updateUI() {
+function clampCardToScreen() 
+{
+    const controls = document.querySelector('.user-controls-layout');
+    const rect = controls.getBoundingClientRect();
+
+    let newLeft = rect.left;
+    let newTop = rect.top;
+
+    if (rect.left < 0) 
+        newLeft = 0;
+
+    if (rect.top < 0) 
+        newTop = 0;
+
+    if (rect.right > window.innerWidth) 
+        newLeft = window.innerWidth - rect.width;
+
+    if (rect.bottom > window.innerHeight) 
+        newTop = window.innerHeight - rect.height;
+
+    controls.style.left = newLeft + "px";
+    controls.style.top = newTop + "px";
+
+    localStorage.setItem("controlsPos", JSON.stringify ({
+        left: controls.style.left,
+        top: controls.style.top
+    }))
+}
+
+window.addEventListener('resize', clampCardToScreen)
+window.addEventListener('load', clampCardToScreen)
+
+export function updateUI() 
+{
     const meta = store.tracks[store.currentTrackIndex]
-    if (!meta) return
+    if (!meta) 
+        return
 
     const name = meta.name.replace(/\.(mp3|mp4)$/i, '')
     document.title = name
     document.getElementById('trackNameWrapper').textContent = name
 
     store.trackMetadata.forEach(item => item.classList.remove('active-track'))
-    if (store.trackMetadata[store.currentTrackIndex]) store.trackMetadata[store.currentTrackIndex].classList.add('active-track')
+    if (store.trackMetadata[store.currentTrackIndex]) 
+        store.trackMetadata[store.currentTrackIndex].classList.add('active-track')
 
-    if ('mediaSession' in navigator) {
-        navigator.mediaSession.setActionHandler('previoustrack', () => {
+    if ('mediaSession' in navigator) 
+    {
+        navigator.mediaSession.setActionHandler('previoustrack', () => 
+        {
             dom.playPreviousTrackButton.click()
             console.log('Playing Previous Track:', store.tracks[(store.currentTrackIndex - 1 + store.tracks.length) % store.tracks.length].name)
         })
 
-        navigator.mediaSession.setActionHandler('play', () => {
+        navigator.mediaSession.setActionHandler('play', () => 
+        {
             audioFromTrack.play()
             playPauseTrackButton.textContent = '❚❚'
             console.log('Playing Track:', store.tracks[store.currentTrackIndex]?.name || 'Unknown')
         })
 
-        navigator.mediaSession.setActionHandler('pause', () => {
+        navigator.mediaSession.setActionHandler('pause', () => 
+        {
             audioFromTrack.pause()
             playPauseTrackButton.textContent = '▶︎'
             console.log('Pausing Track:', store.tracks[store.currentTrackIndex]?.name || 'Unknown')
         })
 
-        navigator.mediaSession.setActionHandler('nexttrack', () => {
+        navigator.mediaSession.setActionHandler('nexttrack', () => 
+        {
             dom.playNextTrackButton.click()
             console.log('Playing Next Track:', store.tracks[(store.currentTrackIndex + 1) % store.tracks.length].name)
         })

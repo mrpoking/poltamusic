@@ -12,43 +12,6 @@ input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration {display: none; -webkit-appearance: none; appearance: none;}
 input::placeholder {color: var(--fontcolor-2);}
 
-#volumeBar, #seekBar
-{
-    -webkit-appearance: none;
-    appearance: none;
-    background: var(--backgroundcolor-3);
-    border-radius: var(--borderradius-square);
-    outline: none;
-}
-
-#volumeBar::-webkit-slider-thumb, #seekBar::-webkit-slider-thumb
-{
-    -webkit-appearance: none;
-    appearance: none;
-    width: 1.2em;
-    height: 1.2em;
-    background: var(--backgroundcolor-a);
-    border-radius: var(--borderradius-square);
-    cursor: pointer;
-    border: none;
-}
-
-#volumeBar::-moz-range-thumb, #seekBar::-moz-range-thumb 
-{
-    background: var(--backgroundcolor-a);
-    border-radius: 50%;
-    cursor: pointer;
-    border: none;
-}
-
-#volumeBar::-ms-thumb, #seekBar::-ms-thumb 
-{
-    background: var(--backgroundcolor-a);
-    border-radius: 50%;
-    cursor: pointer;
-    border: none;
-}
-
 input[type="range"] 
 {
     width: 100%;
@@ -86,14 +49,17 @@ dialog::backdrop {background-color: var(--backgroundcolor-1);}
 {
     position: relative;
     color: var(--textcolor-3);
-    background-color: var(--backgroundcolor-2);
+    background-color: color-mix(in oklch, var(--backgroundcolor-2) 60%, transparent);
     border-radius: 0.6rem;
     z-index: 0;
 }
 
-.active-track:hover 
+@supports (background-color: color-mix(in oklch, var(--backgroundcolor-c) 60%, transparent)) 
 {
-    background-color: var(--backgroundcolor-c);
+    .active-track:hover
+    {
+        background-color: color-mix(in oklch, var(--backgroundcolor-c) 60%, transparent);
+    }
 }
 
 .active-track::before 
@@ -103,21 +69,21 @@ dialog::backdrop {background-color: var(--backgroundcolor-1);}
     inset: 0;
     padding: 0.18rem;
     border-radius: inherit;
-    background: conic-gradient(
-        from var(--gradient-angle),
-        var(--cardbackgroundcolor-1),
-        var(--cardbackgroundcolor-2),
-        var(--cardbackgroundcolor-3),
-        var(--cardbackgroundcolor-2),
-        var(--cardbackgroundcolor-1)
-    );
-
+    background: 
+        conic-gradient(from var(--gradient-angle),
+            var(--cardbackgroundcolor-1),
+            var(--cardbackgroundcolor-2),
+            var(--cardbackgroundcolor-3),
+            var(--cardbackgroundcolor-2),
+            var(--cardbackgroundcolor-1)
+        );
     -webkit-mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
     -webkit-mask-composite: xor;
-            mask-composite: exclude;
-
+    mask-composite: exclude;
     animation: rotation 18s linear infinite;
     pointer-events: none;
     z-index: -1;
@@ -157,6 +123,7 @@ body
     font-family: 'Courier-New', monospace;
     background: var(--lightmode-background-image) no-repeat center / cover;
     background-attachment: fixed;
+    background-color: var(--backgroundcolor-1);
 }
 
 .scroll-track 
@@ -183,8 +150,8 @@ body
 
 :root 
 {
-    --darkmode-background-image: url('image/darkmodeBG.png');
-    --lightmode-background-image: url('image/lightmodeBG.png');
+    --darkmode-background-image: url('../image/darkmodeBody.png');
+    --lightmode-background-image: url('../image/lightmodeBody.png');
 }
 
 :root

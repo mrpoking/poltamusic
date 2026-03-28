@@ -5,12 +5,15 @@ let isLightMode = (localStorage.getItem('isLightMode') === 'lightmode')
 
 const themeButton = document.getElementById('themeButton')
 const uploadTrackButtonElement = document.getElementById('uploadTrackButton')
+const grabButtonElement = document.getElementById('grabButton')
 
 const lightmodeThemeIcon = `<div class="lightmode-theme-icon"></div>`
 const lightmodeUploadTrackIcon = `<div class="lightmode-upload-track-icon"></div>`
+const lightmodeGrabIcon = `<div class="lightmode-grab-icon"></div>`
 
 const darkmodeThemeIcon = `<div class="darkmode-theme-icon"></div>`
 const darkmodeUploadTrackIcon = `<div class="darkmode-upload-track-icon"></div>`
+const darkmodeGrabIcon = `<div class="darkmode-grab-icon"></div>`
 
 function updateThemeUI()
 {
@@ -21,13 +24,17 @@ function updateThemeUI()
     uploadTrackButtonElement.innerHTML = isLightMode 
         ? darkmodeUploadTrackIcon 
         : lightmodeUploadTrackIcon
+
+    grabButtonElement.innerHTML = isLightMode 
+        ? darkmodeGrabIcon 
+        : lightmodeGrabIcon
 }
 
 window.addEventListener("load", () => 
 {
     updateThemeUI();
     applyThemeColors();
-});
+})
 
 themeButton.addEventListener('click', () => 
 {

@@ -47,7 +47,7 @@
 
         .theme-button
         {
-            padding: 0.8em;
+            padding: 1em;
             height: 100%;
             aspect-ratio: 1/1;
             border-radius: var(--borderradius-circle);
@@ -58,25 +58,29 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            &:hover{background-color: var(--backgroundcolor-2);}
+        }
+
+        .theme-button:hover
+        {
+            background-color: var(--backgroundcolor-2);
         }
 
             .lightmode-theme-icon
             {
-                height: 100%; 
+                height: 100%;
                 aspect-ratio: 1/1;
-                background-color: var(--textcolor-4); 
-                -webkit-mask: url(../image/lighticon.png) no-repeat center / contain; 
-                mask: url(../image/lighticon.png) no-repeat center / contain;
+                background-color: var(--textcolor-4);
+                -webkit-mask: url(../image/sunIcon.svg) no-repeat center / contain;
+                mask: url(../image/sunIcon.svg) no-repeat center / contain;
             }
 
             .darkmode-theme-icon
             {
-                height: 100%; 
+                height: 100%;
                 aspect-ratio: 1/1;
-                background-color: var(--textcolor-4); 
-                -webkit-mask: url(../image/darkicon.png) no-repeat center / contain; 
-                mask: url(../image/darkicon.png) no-repeat center / contain;
+                background-color: var(--textcolor-4);
+                -webkit-mask: url(../image/moonIcon.svg) no-repeat center / contain;
+                mask: url(../image/moonIcon.svg) no-repeat center / contain;
             }
 
         .upload-track-button
@@ -92,25 +96,29 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            &:hover{background-color: var(--backgroundcolor-3);}
+        }
+
+        .upload-track-button:hover
+        {
+            background-color: var(--backgroundcolor-3);
         }
 
             .lightmode-upload-track-icon
             {
-                height: 100%; 
+                height: 100%;
                 aspect-ratio: 1/1;
-                background-color: var(--textcolor-4); 
-                -webkit-mask: url(../image/uploadtrackicon.png) no-repeat center / contain; 
-                mask: url(../image/uploadtrackicon.png) no-repeat center / contain;
+                background-color: var(--textcolor-4);
+                -webkit-mask: url(../image/uploadIcon.svg) no-repeat center / contain;
+                mask: url(../image/uploadIcon.svg) no-repeat center / contain;
             }
 
             .darkmode-upload-track-icon
             {
-                height: 100%; 
+                height: 100%;
                 aspect-ratio: 1/1;
-                background-color: var(--textcolor-4); 
-                -webkit-mask: url(../image/uploadtrackicon.png) no-repeat center / contain; 
-                mask: url(../image/uploadtrackicon.png) no-repeat center / contain;
+                background-color: var(--textcolor-4);
+                -webkit-mask: url(../image/uploadIcon.svg) no-repeat center / contain;
+                mask: url(../image/uploadIcon.svg) no-repeat center / contain;
             }
 
 .sidebar
@@ -128,7 +136,7 @@
     .user-controls-layout
     {
         padding: 0.6em;
-        gap: 1.6em;
+        gap: 0.6em;
         width: 100%;
         max-width: 15em;
         height: fit-content;
@@ -143,8 +151,8 @@
         left: 0;
         z-index: 1;
         box-shadow: 0 0.25em 0.6em rgba(0,0,0,0.25);
-        -webkit-backdrop-filter: blur(0.1em);
-        backdrop-filter: blur(0.1em);
+        -webkit-backdrop-filter: blur(0.3em);
+        backdrop-filter: blur(0.3em);
         touch-action: none;
         overflow: hidden;
     }
@@ -154,86 +162,101 @@
         cursor: grabbing;
     }
 
-        .drag-handle 
-        {
-            position: absolute;
-            top: 0.6em;
-            right: 0.6em;
-            width: 1.6em;
-            height: 1.6em;
-            background-color: var(--cardbackgroundcolor-3);
-            border: 4px solid var(--textcolor-3);
-            border-radius: 0.3em;
-            cursor: grab;
-            opacity: 1;
-            z-index: 1;
-        }
-
-        .drag-handle:active 
-        {
-            cursor: grabbing;
-            opacity: 1;
-        }
-
-        .track-name-container
+        .user-controls-layout-top
         {
             width: 100%;
             height: fit-content;
             display: flex;
-            overflow: hidden;
+            align-items: center;
+            justify-content: center;
         }
 
-            .track-name-wrapper
+            .drag-handle 
             {
-                width: fit-content;
-                display: inline-block;
-                white-space: nowrap;
-                color: var(--textcolor-3);
-                animation: scroll-left 50s linear infinite;
+                width: 1.6em;
+                aspect-ratio: 1/1;
+                border-radius: var(--borderradius-circle);
+                cursor: grab;
+                opacity: 1;
+                z-index: 1;
+                align-self: end;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
 
-            .track-name-wrapper::after
+            .drag-handle:active 
             {
-                content: " ";
-                display: inline-block;
-                white-space: nowrap;
-                padding-left: 3em;
-                animation: scroll-left 3s linear infinite;
-                animation-delay: -3s;
+                cursor: grabbing;
+                opacity: 1;
+            }
+
+                .lightmode-grab-icon
+                {
+                    width: 100%;
+                    aspect-ratio: 1/1;
+                    background-color: var(--textcolor-4);
+                    -webkit-mask: url(../image/grabIcon.svg) no-repeat center / contain;
+                    mask: url(../image/grabIcon.svg) no-repeat center / contain;
+                }
+
+                .darkmode-grab-icon
+                {
+                    height: 100%;
+                    aspect-ratio: 1/1;
+                    background-color: var(--textcolor-4);
+                    -webkit-mask: url(../image/grabIcon.svg) no-repeat center / contain;
+                    mask: url(../image/grabIcon.svg) no-repeat center / contain;
+                }
+
+            .track-name-container
+            {
+                width: 100%;
+                height: fit-content;
+                display: flex;
                 overflow: hidden;
             }
 
-            .track-name-wrapper:hover
-            {
-                animation-play-state: paused;
-            }
+                .track-name-wrapper
+                {
+                    width: fit-content;
+                    display: inline-block;
+                    white-space: nowrap;
+                    color: var(--textcolor-3);
+                    animation: scroll-left 50s linear infinite;
+                }
 
-            .track-name-wrapper:hover::after
-            {
-                animation-play-state: paused;
-            }
+                .track-name-wrapper::after
+                {
+                    content: " ";
+                    display: inline-block;
+                    white-space: nowrap;
+                    padding-left: 3em;
+                    animation: scroll-left 3s linear infinite;
+                    animation-delay: -3s;
+                    overflow: hidden;
+                }
 
-            @keyframes scroll-left
-            {
-                0%
+                .track-name-wrapper:hover
                 {
-                    transform: translateX(0);
+                    animation-play-state: paused;
                 }
-                50%
-                {
-                    transform: translateX(-100%);
-                }
-                50.01%
-                {
-                    transform: translateX(100%);
-                }
-                100%
-                {
-                    transform: translateX(0);
-                }
-            }
 
-        .control-button-wrapper
+                .track-name-wrapper:hover::after
+                {
+                    animation-play-state: paused;
+                }
+
+                @keyframes scroll-left
+                {
+                    0% { transform: translateX(0); }
+                    50% { transform: translateX(-100%); }
+                    50.01% { transform: translateX(100%); }
+                    100% { transform: translateX(0); }
+                }
+
+        .user-controls-layout-center
         {
             gap: 0.6em;
             width: 100%;
@@ -255,7 +278,12 @@
                 border-radius: var(--borderradius-square);
                 background-color: var(--backgroundcolor-3);
                 cursor: pointer;
-                &:hover{background-color: var(--backgroundcolor-4);}
+            }
+
+            .control-previous-button:hover,
+            .control-next-button:hover
+            {
+                background-color: var(--backgroundcolor-4);
             }
 
             .play-pause-button
@@ -269,7 +297,60 @@
                 border-radius: var(--borderradius-square);
                 background-color: var(--backgroundcolor-3);
                 cursor: pointer;
-                &:hover{background-color: var(--backgroundcolor-4);}
+            }
+
+            .play-pause-button:hover
+            {
+                background-color: var(--backgroundcolor-4);
+            }
+
+        .user-controls-layout-bottom
+        {
+            padding: 0.4em 0 0.2em 0;
+            gap: 1.2em;
+            width: 100%;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+            #volumeBar, #seekBar
+            {
+                -webkit-appearance: none;
+                appearance: none;
+                background: var(--backgroundcolor-3);
+                border-radius: var(--borderradius-square);
+                outline: none;
+            }
+
+            #volumeBar::-webkit-slider-thumb, #seekBar::-webkit-slider-thumb
+            {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 1.2em;
+                height: 1.2em;
+                background: var(--backgroundcolor-a);
+                border-radius: var(--borderradius-square);
+                cursor: pointer;
+                border: none;
+            }
+
+            #volumeBar::-moz-range-thumb, #seekBar::-moz-range-thumb 
+            {
+                background: var(--backgroundcolor-a);
+                border-radius: 50%;
+                cursor: pointer;
+                border: none;
+            }
+
+            #volumeBar::-ms-thumb, #seekBar::-ms-thumb 
+            {
+                background: var(--backgroundcolor-a);
+                border-radius: 50%;
+                cursor: pointer;
+                border: none;
             }
 
     .user-playlist-layout
@@ -306,13 +387,13 @@
             justify-content: space-between;
             cursor: pointer;
             position: relative;
-            -webkit-backdrop-filter: blur(0.1em);
-            backdrop-filter: blur(0.1em);
-            &:hover 
+        }
+
+        @supports (background-color: color-mix(in oklch, var(--backgroundcolor-3) 60%, transparent)) 
+        {
+            li:hover 
             {
-                background-color: color-mix(in oklch, var(--backgroundcolor-3) 60%, transparent); 
-                -webkit-backdrop-filter: blur(0.01em);
-                backdrop-filter: blur(0.01em);
+                background-color: color-mix(in oklch, var(--backgroundcolor-3) 60%, transparent);
             }
         }
 
@@ -337,5 +418,9 @@
                     border-radius: var(--borderradius-square);
                     background-color: var(--backgroundcolor-a);
                     cursor: pointer;
-                    &:hover{background-color: var(--backgroundcolor-b);}
+                }
+
+                .delete-button:hover
+                {
+                    background-color: var(--backgroundcolor-b);
                 }
