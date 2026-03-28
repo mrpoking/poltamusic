@@ -328,6 +328,9 @@ window.addEventListener('load', clampCardToScreen)
 store.volumeBeforeMute = store.volumeBeforeMute ?? audioFromTrack.volume
 document.addEventListener('keydown', event =>
 {
+    if (event.target.matches('input, textarea, [contenteditable="true"]')) 
+        return
+
     if (event.key === 'ArrowUp') 
     {
         event.preventDefault()
