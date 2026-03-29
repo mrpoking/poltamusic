@@ -117,12 +117,18 @@ dialog::backdrop {background-color: var(--backgroundcolor-1);}
 
 body
 {
+    margin: 0;
+    padding: 0;
     width: 100%;
     height: 100%;
     padding-top: 4em;
     font-family: 'Courier-New', monospace;
-    background: var(--lightmode-background-image) no-repeat center / cover;
+    background-image: var(--lightmode-background-image);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% auto;
     background-attachment: fixed;
+    min-height: 100vh;
     background-color: var(--backgroundcolor-1);
 }
 
@@ -150,8 +156,8 @@ body
 
 :root 
 {
-    --darkmode-background-image: url('image/darkmodeBody.png');
-    --lightmode-background-image: url('image/lightmodeBody.png');
+    --darkmode-background-image: url('../image/darkmodeBody.png');
+    --lightmode-background-image: url('../image/lightmodeBody.png');
 }
 
 :root
