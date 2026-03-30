@@ -138,11 +138,6 @@ body
     min-height: 100vh;
 
     font-family: 'Courier-New', monospace;
-    background-image: var(--lightmode-background-image);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 100% auto;
-    background-attachment: fixed;
     background-color: var(--backgroundcolor-1);
 }
 
@@ -166,12 +161,6 @@ body
 {
     --borderradius-square: 0.4em;
     --borderradius-circle: 2em;
-}
-
-:root 
-{
-    --darkmode-background-image: url('image/darkmodeBody.png');
-    --lightmode-background-image: url('image/lightmodeBody.png');
 }
 
 :root

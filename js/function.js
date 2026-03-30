@@ -332,48 +332,76 @@ document.addEventListener('keydown', event =>
         return
 
     if (event.key === 'ArrowUp') 
-    {
-        event.preventDefault()
-
-        let newSeek = audioFromTrack.currentTime + 5
-        if (newSeek > audioFromTrack.duration) 
-            newSeek = audioFromTrack.duration
-
-        audioFromTrack.currentTime = newSeek
-        seekBar.value = newSeek
-
-        console.log('Seek Forward (Keyboard):', Math.round(newSeek) + 's')
-    } 
-    
-    else if (event.key === 'ArrowDown') 
-    {
-        event.preventDefault()
-
-        let newSeek = audioFromTrack.currentTime - 5
-        if (newSeek < 0) 
-            newSeek = 0
-        
-        audioFromTrack.currentTime = newSeek
-        seekBar.value = newSeek
-
-        console.log('Seek Backward (Keyboard):', Math.round(newSeek) + 's')
-    }
-
-    else if (event.key === 'ArrowLeft')
-    {
+    {        
         event.preventDefault()
         dom.playPreviousTrackButton.click()
 
         console.log('Playing Previous Track:', store.tracks[(store.currentTrackIndex - 1 + store.tracks.length) % store.tracks.length].name)
     }
-
-    else if (event.key === 'ArrowRight')
+    
+    else if (event.key === 'ArrowDown') 
     {
         event.preventDefault()
         dom.playNextTrackButton.click()
 
         console.log('Playing Next Track:', store.tracks[(store.currentTrackIndex + 1) % store.tracks.length].name)
     }
+
+    else if (event.key === 'ArrowLeft' && event.shiftKey)
+    {
+        event.preventDefault();
+
+        let newVolume = audioFromTrack.volume - 0.05;
+        if (newVolume < 0) newVolume = 0;
+
+        audioFromTrack.volume = newVolume;
+        volumeBar.value = newVolume;
+
+        localStorage.setItem('volume_track_' + store.tracks[store.currentTrackIndex]?.id, newVolume);
+        console.log('Volume Down (Shift + ArrowLeft):', Math.round(newVolume * 100) + '%');
+    }
+
+    else if (event.key === 'ArrowRight' && event.shiftKey)
+    {
+        event.preventDefault();
+
+        let newVolume = audioFromTrack.volume + 0.05;
+        if (newVolume > 1) newVolume = 1;
+
+        audioFromTrack.volume = newVolume;
+        volumeBar.value = newVolume;
+
+        localStorage.setItem('volume_track_' + store.tracks[store.currentTrackIndex]?.id, newVolume);
+        console.log('Volume Up (Shift + ArrowRight):', Math.round(newVolume * 100) + '%');
+    }
+
+    else if (event.key === 'ArrowLeft')
+    {
+        event.preventDefault();
+
+        let newSeek = audioFromTrack.currentTime - 5;
+        if (newSeek < 0) newSeek = 0;
+
+        audioFromTrack.currentTime = newSeek;
+        seekBar.value = newSeek;
+
+        console.log('Seek Backward:', Math.round(newSeek) + 's');
+    }
+
+    else if (event.key === 'ArrowRight')
+    {
+        event.preventDefault();
+
+        let newSeek = audioFromTrack.currentTime + 5;
+        if (newSeek > audioFromTrack.duration)
+            newSeek = audioFromTrack.duration;
+
+        audioFromTrack.currentTime = newSeek;
+        seekBar.value = newSeek;
+
+        console.log('Seek Forward:', Math.round(newSeek) + 's');
+    }
+
 
     else if (event.code === 'Space')
     {

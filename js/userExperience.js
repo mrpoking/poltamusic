@@ -111,3 +111,51 @@ function stopDrag()
 controls.addEventListener('pointerdown', startDrag)
 document.addEventListener('pointermove', onDrag)
 document.addEventListener('pointerup', stopDrag)
+
+const elementToResize = document.querySelector('.user-controls-layout');
+const resizer = document.createElement('div');
+const savedSize = JSON.parse(localStorage.getItem('controlSize'))
+
+const minWidth = 120;
+const minHeight = 45;
+const maxWidth = 300;
+const maxHeight = 250;
+
+resizer.style.right = 0;
+resizer.style.bottom = 0;
+resizer.style.width = '0.625em';
+resizer.style.height = '0.625em';
+resizer.style.cursor = 'se-resize';
+resizer.style.position = 'absolute';
+
+if (savedSize)
+{
+    elementToResize.style.width = savedSize.width
+    elementToResize.style.height = savedSize.height
+}
+
+elementToResize.appendChild(resizer);
+resizer.addEventListener('mousedown', initResize, false);
+
+function initResize() 
+{
+   window.addEventListener('mousemove', Resize, false);
+   window.addEventListener('mouseup', stopResize, false);
+}
+
+function Resize(e) 
+{
+   elementToResize.style.width = Math.max(minWidth, Math.min(maxWidth, e.clientX - elementToResize.offsetLeft)) + 'px';
+   elementToResize.style.height = Math.max(minHeight, Math.min(maxHeight, e.clientY - elementToResize.offsetTop)) + 'px';
+}
+
+function stopResize() 
+{
+    window.removeEventListener('mousemove', Resize, false);
+    window.removeEventListener('mouseup', stopResize, false);
+
+    localStorage.setItem('controlSize', JSON.stringify ({
+        width: elementToResize.style.width,
+        height: elementToResize.style.height
+    }))
+}
