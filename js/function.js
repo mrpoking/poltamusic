@@ -246,7 +246,7 @@ export function preloadNext()
 
 export function deleteSong(event, id) 
 {
-    event.preventDefault()
+    event.stopPropagation()
 
     const indexToDelete = store.tracks.findIndex(t => t.id === id)
     if (indexToDelete === -1) 
@@ -291,6 +291,8 @@ export function deleteSong(event, id)
             loadPlaylist()
         }
     }
+
+    event.preventDefault()
 }
 
 function clampCardToScreen() 
