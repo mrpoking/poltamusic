@@ -246,7 +246,7 @@ export function preloadNext()
 
 export function deleteSong(id) 
 {
-    e.stopPropagation()
+    event.preventDefault()
 
     const indexToDelete = store.tracks.findIndex(t => t.id === id)
     if (indexToDelete === -1) 
