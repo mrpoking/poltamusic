@@ -244,7 +244,7 @@ export function preloadNext()
     })
 }
 
-export function deleteSong(id) 
+export function deleteSong(event, id) 
 {
     event.preventDefault()
 
