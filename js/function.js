@@ -291,8 +291,6 @@ export function deleteSong(event, id)
             loadPlaylist()
         }
     }
-
-    event.preventDefault()
 }
 
 function clampCardToScreen() 
