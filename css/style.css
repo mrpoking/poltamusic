@@ -59,7 +59,7 @@
         justify-content: center;
     }
 
-        .theme-button
+        .theme-button, .play-one-song-button
         {
             padding: 1em;
 
@@ -100,6 +100,19 @@
 
                 -webkit-mask: url(../image/moonIcon.svg) no-repeat center / contain;
                 mask: url(../image/moonIcon.svg) no-repeat center / contain;
+            }
+
+        .play-one-song-button:hover {background-color: var(--backgroundcolor-2);}
+
+            .play-one-song-icon
+            {
+                height: 100%;
+                aspect-ratio: 1/1;
+
+                background-color: var(--textcolor-4);
+
+                -webkit-mask: url(../image/playOneSongIcon.svg) no-repeat center / contain;
+                mask: url(../image/playOneSongIcon.svg) no-repeat center / contain;
             }
 
         .upload-track-button

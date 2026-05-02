@@ -48,4 +48,6 @@ store.searchTrackTimeout = null
 store.isPlaylistLoaded = false
 store.volumeBeforeMute = null
 
+store.playOneMode = false
+
 store.userInteractedEarly = false

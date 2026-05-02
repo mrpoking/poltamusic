@@ -33,5 +33,7 @@ export const store =
     isPlaylistLoaded: false,
     volumeBeforeMute: null,
 
+    playOneMode: false,
+
     userInteractedEarly: false,
 }

@@ -119,11 +119,15 @@ export function getSongData(id)
 
 export function playSongById(id) 
 {
+    if (store.playOneMode) return
+
     store.userInteractedEarly = true
 
     const index = store.tracks.findIndex(t => t.id === id)
     if (index !== -1) 
     {
+
+        if (store.playOneMode) return
         playSong(index)
         console.log('Playing:', store.tracks[index].name)
     }
@@ -131,12 +135,15 @@ export function playSongById(id)
 
 export function restoreLastSong() 
 {
+    if (store.playOneMode) return
+
     if (store.userInteractedEarly) 
         return
 
     const savedIndex = Number(localStorage.getItem('lastSongIndex'))
     if (!Number.isNaN(savedIndex) && savedIndex >= 0 && savedIndex < store.tracks.length)
     {
+        if (store.playOneMode) return
         playSong(savedIndex)
         console.log('Restoring Last Played Song:', store.tracks[savedIndex].name)
     }
@@ -144,6 +151,8 @@ export function restoreLastSong()
 
 export async function playSong(index) 
 {
+    if (store.playOneMode) return
+
     const token = ++store.loadToken
     const meta = store.tracks[index]
 
@@ -212,6 +221,9 @@ export async function playSong(index)
 
 export function preloadNext() 
 {
+    if (!store.playOneMode)
+        preloadNext()
+
     if (store.tracks.length < 2) 
         return
 
@@ -449,6 +461,33 @@ document.addEventListener('keydown', event =>
         }
     }
 })
+
+
+const playOneSongButton = document.getElementById('playOneSongButton')
+playOneSongButton.addEventListener('click', () =>
+{
+    store.playOneMode = !store.playOneMode
+    console.log('Play One Mode:', store.playOneMode)
+})
+
+
+audioFromTrack.addEventListener('ended', () =>
+{
+    if (store.playOneMode)
+    {
+        console.log('Single mode: stop after this song')
+
+        audioFromTrack.pause()
+        audioFromTrack.currentTime = 0
+
+        playPauseTrackButton.textContent = '▶︎'
+
+        return
+    }
+
+    dom.playNextTrackButton.click()
+})
+
 
 export function updateUI() 
 {
