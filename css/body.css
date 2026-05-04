@@ -90,11 +90,11 @@ dialog::backdrop {background-color: var(--backgroundcolor-1);}
   border-radius: inherit;
   background: 
     conic-gradient(from var(--gradient-angle),
-        var(--cardbackgroundcolor-1),
-        var(--cardbackgroundcolor-2),
-        var(--cardbackgroundcolor-3),
-        var(--cardbackgroundcolor-2),
-        var(--cardbackgroundcolor-1)
+      var(--cardbackgroundcolor-1),
+      var(--cardbackgroundcolor-2),
+      var(--cardbackgroundcolor-3),
+      var(--cardbackgroundcolor-2),
+      var(--cardbackgroundcolor-1)
     );
 
   -webkit-mask:

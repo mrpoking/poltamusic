@@ -15,18 +15,27 @@
 <body>
   <nav class="navbar">
     <div class="navbar-left">
-      <button type="button" id="themeSwitchButton" class="theme-switch-button"></button>
-      <button type="button" id="playOneSongButton" class="play-one-song-button">
-        <div class="play-one-song-icon"></div>
+      <button type="button" id="themeSwitchButton" class="theme-switch-button" title="ThemeSwitch"></button>
+
+      <button type="button" id="playOneTrackButton" class="play-one-track-button" title="PlayOneTrack">
+        <div class="play-one-track-icon"></div>
+      </button>
+
+      <button type="button" id="replayTrackButton" class="replay-track-button" title="ReplayTrack">
+        <div class="replay-track-icon"></div>
+      </button>
+
+      <button type="button" id="shuffleTrackButton" class="shuffle-track-button" title="ShuffleTrack">
+        <div class="shuffle-track-icon"></div>
       </button>
     </div>
 
     <div class="navbar-right">
-      <input type="search" id="searchTrackBar" placeholder="..." data-search class="search-track-bar" autocomplete="off">
+      <input type="search" id="searchTrackBar" placeholder="..." data-search class="search-track-bar" autocomplete="off" title="SearchTrack">
 
-      <button type="button" class="upload-track-button">
+      <button type="button" class="upload-track-button" title="UploadTrack">
         <label id="upload-track-label" for="upload-track" class="upload-track">
-          <input type="file" id="upload-track" name="upload-track" multiple accept=".mp3, .mp4">
+          <input type="file" id="upload-track" name="upload-track" multiple accept=".mp3, .mp4" title="UploadTrack">
 
           <div class="upload-track-icon" id="uploadTrackButton"></div>
         </label>
@@ -41,7 +50,7 @@
       <div class="user-controls-layout-top">
         <div class="track-name-container">
           <div class="track-name-wrapper" id="trackNameWrapper">
-            <p>Loading Previous Track..</p>
+            <p>Loading Previous Track...</p>
           </div>
         </div>
 
@@ -51,17 +60,23 @@
       </div>
 
       <div class="user-controls-layout-center">
-        <button type="button" id="playPreviousTrackButton" class="control-previous-button">«</button>
+        <button type="button" id="playPreviousTrackButton" class="play-previous-track-button" title="PlayPreviousTrack">
+          <div class="play-previous-track-icon"></div>
+        </button>
 
-        <button type="button" id="playPauseTrackButton" class="play-pause-button">▶︎</button>
+        <button type="button" id="playPauseTrackButton" class="play-pause-track-button" title="PlayPauseTrack">
+          <div class="pause-track-icon"></div>
+        </button>
 
-        <button type="button" id="playNextTrackButton" class="control-next-button">»</button>
+        <button type="button" id="playNextTrackButton" class="play-next-track-button" title="PlayNextTrack">
+          <div class="play-next-track-icon"></div>
+        </button>
       </div>
 
       <div class="user-controls-layout-bottom">
-        <input type="range" id="volumeBar" min="0" max="1" step="0.01">
+        <input type="range" id="volumeBar" min="0" max="1" step="0.01" title="VolumeBar">
 
-        <input type="range" id="seekBar" value="0" step="0.01">
+        <input type="range" id="seekBar" value="0" step="0.01" title="SeekBar">
       </div>
     </div>
 

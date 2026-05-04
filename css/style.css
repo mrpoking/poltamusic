@@ -31,7 +31,7 @@
   }
 
 
-    .theme-switch-button, .play-one-song-button
+    .theme-switch-button, .play-one-track-button, .replay-track-button, .shuffle-track-button
     {
       padding: 1em;
 
@@ -49,6 +49,9 @@
       align-items: center;
       justify-content: center;
     }
+
+
+    .theme-switch-button:active {border: 2px solid var(--backgroundcolor-4);}
 
 
       .lightmode-theme-switch-icon
@@ -75,19 +78,49 @@
       }
 
 
-  .play-one-song-button-selected {border: 2px solid var(--backgroundcolor-4);}
+  .play-one-track-button-selected {border: 2px solid var(--backgroundcolor-4);}
 
 
-      .play-one-song-icon
-      {
-        height: 100%;
-        aspect-ratio: 1/1;
+    .play-one-track-icon
+    {
+      height: 100%;
+      aspect-ratio: 1/1;
 
-        background-color: var(--textcolor-4);
+      background-color: var(--textcolor-4);
 
-        -webkit-mask: url(../image/playOneSongIcon.svg) no-repeat center / contain;
-        mask: url(../image/playOneSongIcon.svg) no-repeat center / contain;
-      }
+      -webkit-mask: url(../image/playOneSongIcon.svg) no-repeat center / contain;
+      mask: url(../image/playOneSongIcon.svg) no-repeat center / contain;
+    }
+
+
+  .replay-track-button-selected {border: 2px solid var(--backgroundcolor-4);}
+
+
+    .replay-track-icon
+    {
+      height: 100%;
+      aspect-ratio: 1/1;
+
+      background-color: var(--textcolor-4);
+
+      -webkit-mask: url(../image/replayIcon.svg) no-repeat center / contain;
+      mask: url(../image/replayIcon.svg) no-repeat center / contain;
+    }
+
+
+  .shuffle-track-button:active {border: 2px solid var(--backgroundcolor-4);}
+
+
+    .shuffle-track-icon
+    {
+      height: 100%;
+      aspect-ratio: 1/1;
+
+      background-color: var(--textcolor-4);
+
+      -webkit-mask: url(../image/shuffleIcon.svg) no-repeat center / contain;
+      mask: url(../image/shuffleIcon.svg) no-repeat center / contain;
+    }
 
 
   .navbar-right
@@ -213,91 +246,92 @@
     }
 
 
-        .drag-handle 
-        {
-          width: 1.8em;
-          aspect-ratio: 1/1;
+      .drag-handle 
+      {
+        width: 1.8em;
+        aspect-ratio: 1/1;
 
-          border-radius: var(--borderradius-square);
+        border-radius: var(--borderradius-square);
 
-          cursor: grab;
-          opacity: 1;
-          z-index: 1;
-          align-self: end;
+        cursor: grab;
+        opacity: 1;
+        z-index: 1;
+        align-self: end;
 
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-
-        .drag-handle:active {cursor: grabbing; opacity: 1;}
-        .drag-handle:hover {background-color: var(--backgroundcolor-3);}
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
 
-          .drag-handle-icon
-          {
-            width: 100%;
-            aspect-ratio: 1/1;
-
-            background-color: var(--textcolor-4);
-
-            -webkit-mask: url(../image/grabIcon.svg) no-repeat center / contain;
-            mask: url(../image/grabIcon.svg) no-repeat center / contain;
-          }
+      .drag-handle:active {cursor: grabbing; opacity: 1;}
+      .drag-handle:hover {background-color: var(--backgroundcolor-3);}
 
 
-        .track-name-container
+        .drag-handle-icon
         {
           width: 100%;
-          height: 1.2em;
+          aspect-ratio: 1/1;
 
-          display: flex;
-          overflow: hidden;
+          background-color: var(--textcolor-4);
 
-          position: relative;
+          -webkit-mask: url(../image/grabIcon.svg) no-repeat center / contain;
+          mask: url(../image/grabIcon.svg) no-repeat center / contain;
         }
 
 
-          .track-name-wrapper
-          {    
-            padding: 0 1.2em 0 1.2em;
-            
-            width: fit-content;
+      .track-name-container
+      {
+        width: 100%;
+        height: 1.2em;
 
-            color: var(--textcolor-3);
+        display: flex;
+        overflow: hidden;
 
-            display: inline-block;
-            white-space: nowrap;
-    
-            position: absolute;
-            animation: scroll-left 30s linear infinite;
-          }
+        position: relative;
+      }
 
 
-          .track-name-wrapper::after
-          {
-            content: " ";
+        .track-name-wrapper
+        {    
+          padding: 0 1.2em 0 1.2em;
+          
+          width: fit-content;
 
-            display: inline-block;
-            white-space: nowrap;
-            overflow: hidden;
-    
-            animation: scroll-left 3s linear infinite;
-            animation-delay: -3s;
-          }
+          color: var(--textcolor-3);
+
+          display: inline-block;
+          white-space: nowrap;
+  
+          position: absolute;
+          animation: scroll-left 30s linear infinite;
+        }
 
 
-          .track-name-wrapper:hover {animation-play-state: paused;}
-          .track-name-wrapper:hover::after {animation-play-state: paused;}
+        .track-name-wrapper::after
+        {
+          content: " ";
 
-          @keyframes scroll-left
-          {
-            0% {transform: translateX(0);}
-            50% {transform: translateX(-100%);}
-            50.01% {transform: translateX(50%);}
-            100% {transform: translateX(0);}
-          }
+          display: inline-block;
+          white-space: nowrap;
+          overflow: hidden;
+  
+          animation: scroll-left 3s linear infinite;
+          animation-delay: -3s;
+        }
+
+
+        .track-name-wrapper:hover {animation-play-state: paused;}
+        .track-name-wrapper:hover::after {animation-play-state: paused;}
+
+        
+        @keyframes scroll-left
+        {
+          0% {transform: translateX(0);}
+          50% {transform: translateX(-100%);}
+          50.01% {transform: translateX(50%);}
+          100% {transform: translateX(0);}
+        }
 
 
     .user-controls-layout-center
@@ -313,7 +347,7 @@
     }
 
 
-      .control-previous-button, .control-next-button
+      .play-previous-track-button, .play-next-track-button
       {
         padding: 0.6em; 
 
@@ -329,14 +363,41 @@
         background-color: var(--backgroundcolor-3);
 
         cursor: pointer;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
 
-      .control-previous-button:hover,
-      .control-next-button:hover {background-color: var(--backgroundcolor-4);}
+      .play-previous-track-button:hover, .play-next-track-button:hover {background-color: var(--backgroundcolor-4);}
 
 
-      .play-pause-button
+        .play-previous-track-icon
+        {
+          height: 100%;
+          aspect-ratio: 1/1;
+
+          background-color: var(--textcolor-3);
+
+          -webkit-mask: url(../image/backwardIcon.svg) no-repeat center / contain;
+          mask: url(../image/backwardIcon.svg) no-repeat center / contain;
+        }
+
+
+        .play-next-track-icon
+        {
+          height: 100%;
+          aspect-ratio: 1/1;
+
+          background-color: var(--textcolor-3);
+
+          -webkit-mask: url(../image/forwardIcon.svg) no-repeat center / contain;
+          mask: url(../image/forwardIcon.svg) no-repeat center / contain;
+        }
+
+
+      .play-pause-track-button
       {
         padding: 0.6em; 
         
@@ -351,10 +412,38 @@
         background-color: var(--backgroundcolor-3);
 
         cursor: pointer;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
 
-      .play-pause-button:hover {background-color: var(--backgroundcolor-4);}
+      .play-pause-track-button:hover {background-color: var(--backgroundcolor-4);}
+
+
+        .play-track-icon
+        {
+          height: 100%;
+          aspect-ratio: 1/1;
+
+          background-color: var(--textcolor-3);
+
+          -webkit-mask: url(../image/playIcon.svg) no-repeat center / contain;
+          mask: url(../image/playIcon.svg) no-repeat center / contain;
+        }
+
+
+        .pause-track-icon
+        {
+          height: 100%;
+          aspect-ratio: 1/1;
+
+          background-color: var(--textcolor-3);
+
+          -webkit-mask: url(../image/pauseIcon.svg) no-repeat center / contain;
+          mask: url(../image/pauseIcon.svg) no-repeat center / contain;
+        }
 
 
     .user-controls-layout-bottom
@@ -445,7 +534,7 @@
 
     li
     {
-      padding: 0.6em;
+      padding: 0.6em 0.6em 0.6em 0.8em;
       gap: 0.6em;
 
       width: 100%;
@@ -469,6 +558,13 @@
     {
       li:hover {background-color: color-mix(in oklch, var(--backgroundcolor-3) 60%, transparent);}
     }
+
+
+      .playlist-track-title
+      {
+        flex: 1;
+        min-width: 0;
+      }
 
 
       .delete-track-button-wrapper
