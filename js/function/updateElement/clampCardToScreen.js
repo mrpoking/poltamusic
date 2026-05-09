@@ -25,11 +25,11 @@ function clampCardToScreen()
   {
     newTop = (window.innerHeight - rectangle.height)
   }
-
+  
   userControlsLayout.style.left = (newLeft + 'px')
   userControlsLayout.style.top = (newTop + 'px')
-
-  localStorage.setItem("controlsPos", JSON.stringify ({
+  
+  localStorage.setItem('controlsLayoutPosition', JSON.stringify ({
     left: userControlsLayout.style.left,
     top: userControlsLayout.style.top
   }))
@@ -41,11 +41,11 @@ window.addEventListener('load', clampCardToScreen)
 
 
 const controls = document.querySelector('.user-controls-layout')
-const saved = JSON.parse(localStorage.getItem("controlsPos"))
-
+const saved = JSON.parse(localStorage.getItem('controlsLayoutPosition'))
 
 let offsetX = 0
 let offsetY = 0
+
 let isDragging = false
 
 
@@ -63,15 +63,16 @@ function startDrag(event)
     return
   }
 
+  document.querySelector('.user-controls-layout').classList.add('dragging')
+
   isDragging = true
-  
   event.preventDefault()
 
   const rectangle = controls.getBoundingClientRect()
   offsetX = (event.clientX - rectangle.left)
   offsetY = (event.clientY - rectangle.top)
 
-  controls.style.cursor = "grabbing"
+  controls.style.cursor = 'grabbing'
 }
 
 
@@ -102,11 +103,12 @@ function stopDrag()
     return
   }
 
-  isDragging = false;
-  
-  controls.style.cursor = ''
+  controls.classList.remove('dragging')
 
-  localStorage.setItem("controlsPos", JSON.stringify ({
+  isDragging = false;
+  controls.style.cursor = ''
+  
+  localStorage.setItem('controlsLayoutPosition', JSON.stringify ({
     left: controls.style.left,
     top: controls.style.top
   }))

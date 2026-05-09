@@ -1,5 +1,5 @@
 import { storeStation } from '../myStation/exportMyStation.js'
-import { loadPlaylist } from '../myStation/loadPlaylist.js'
+import { loadPlaylist } from '../function/loadPlaylist/loadPlaylist.js'
 
 
 const requestDB = indexedDB.open('playlistDB', 2)

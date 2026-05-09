@@ -47,8 +47,8 @@ input[type="range"]::-webkit-slider-thumb
 
   border-radius: var(--borderradius-square);
   background-color: var(--backgroundcolor-a);
-  transition: background 0.3s;
 
+  transition: background 0.3s;
   -webkit-appearance: none;
 }
 
@@ -97,16 +97,16 @@ dialog::backdrop {background-color: var(--backgroundcolor-1);}
       var(--cardbackgroundcolor-1)
     );
 
-  -webkit-mask:
-  linear-gradient(#fff 0 0) content-box,
-  linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-repeat: no-repeat;
   mask-composite: exclude;
+
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-composite: xor;
 
-  z-index: -1;
   position: absolute;
+  z-index: -1;
+  
   pointer-events: none;
   animation: rotation 18s linear infinite;
 }

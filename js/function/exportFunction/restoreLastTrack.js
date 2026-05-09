@@ -9,17 +9,17 @@ export function restoreLastTrack()
     return
   }
 
-  const savedIndex = Number(localStorage.getItem('lastSongIndex'))
+  const savedLastTrackIndex = Number(localStorage.getItem('lastSongIndex'))
   if 
   (
-    (!Number.isNaN(savedIndex))
+    (!Number.isNaN(savedLastTrackIndex))
     &&
-    (savedIndex >= 0)
+    (savedLastTrackIndex >= 0)
     &&
-    (savedIndex < storeStation.tracksArray.length)
+    (savedLastTrackIndex < storeStation.tracksArray.length)
   )
   {
-    playTrack(savedIndex)
-    console.log('Restoring Last Played Track:', storeStation.tracksArray[savedIndex].name)
+    playTrack(savedLastTrackIndex)
+    console.log('Restoring Last Played Track:', storeStation.tracksArray[savedLastTrackIndex].name)
   }
 }

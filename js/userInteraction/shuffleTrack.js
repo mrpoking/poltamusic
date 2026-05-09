@@ -1,23 +1,24 @@
 import { domStation, storeStation } from '../myStation/exportMyStation.js'
-import { renderPlaylist } from '../myStation/loadPlaylist.js'
+import { renderPlaylist } from '../function/loadPlaylist/renderPlaylist.js'
 import { persistShuffleState } from '../function/exportFunction/shuffleState.js'
 
 
 domStation.shuffleTrackButton.addEventListener('click', () =>
 {
-  if (storeStation.isShuffleTrackMode)
+  if (storeStation.isShuffleTrack)
   {
     shuffleTrack()
     persistShuffleState()
+
     renderPlaylist()
 
-    console.log('Shuffled again')
+    console.log('Shuffled Playlist Again!')
     return
   }
 
-  storeStation.isShuffleTrackMode = true
-  storeStation.isPlayOneTrackMode = false
-  storeStation.isReplayTrackMode = false
+  storeStation.isShuffleTrack = true
+  storeStation.isPlayOneTrack = false
+  storeStation.isReplayTrack = false
 
   domStation.playOneTrackButton.classList.remove('play-one-track-button-selected')
   domStation.replayTrackButton.classList.remove('replay-track-button-selected')
@@ -27,7 +28,7 @@ domStation.shuffleTrackButton.addEventListener('click', () =>
   persistShuffleState()
 
   renderPlaylist()
-  console.log('Shuffle on')
+  console.log('Shuffle Playlist: On')
 })
 
 
@@ -47,15 +48,15 @@ export function shuffleTrack()
   const start = (crypto.getRandomValues(new Uint32Array(1))[0] % tracksArray.length)
   const rotated = tracksArray.slice(start).concat(tracksArray.slice(0, start))
 
-  storeStation.shuffledIndexes = rotated
+  storeStation.shuffledTracksArray = rotated
   if (storeStation.currentTrackIndex >= 0)
   {
-    const at = rotated.indexOf(storeStation.currentTrackIndex)
-    storeStation.shuffleIndex = Math.max(0, at)
+    const getShuffleTrackIndex = rotated.indexOf(storeStation.currentTrackIndex)
+    storeStation.shuffleTrackIndex = Math.max(0, getShuffleTrackIndex)
   }
 
   else
   {
-    storeStation.shuffleIndex = 0
+    storeStation.shuffleTrackIndex = 0
   }
 }

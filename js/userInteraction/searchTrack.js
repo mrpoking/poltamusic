@@ -1,5 +1,5 @@
 import { domStation, storeStation } from '../myStation/exportMyStation.js'
-import { noResultsLayout } from '../myStation/loadPlaylist.js'
+import { noResultsLayout } from '../function/loadPlaylist/loadPlaylist.js'
 
 
 domStation.searchTrackBar.addEventListener('input', () =>
@@ -15,20 +15,21 @@ domStation.searchTrackBar.addEventListener('input', () =>
   storeStation.searchTrackTimeout = setTimeout(() =>
   {
     let trackHasFound = false
-    storeStation.trackMetadataArray.forEach(li =>
+    storeStation.trackMetadataArray.forEach(data =>
     {
-      const trackIndex = Number(li.dataset.trackIndex)
+      const trackIndex = Number(data.dataset.trackIndex)
       const track = storeStation.tracksArray[trackIndex]
-      const match = track.name.toLowerCase().includes(value)
+      const isMatching = track.name.toLowerCase().includes(value)
 
-      li.style.display = match ? '' : 'none'
-      if (match)
+      data.style.display = (isMatching) ? ('') : ('none')
+      
+      if (isMatching)
       {
         trackHasFound = true
       }
     })
 
-    noResultsLayout.style.display = trackHasFound ? 'none' : ''
+    noResultsLayout.style.display = (trackHasFound) ? ('none') : ('')
     storeStation.isTrackFound = trackHasFound
-  }, 150)
+  }, 145)
 })

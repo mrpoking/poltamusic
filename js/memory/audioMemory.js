@@ -8,60 +8,58 @@ import { getNextPlaylistTrackIndex } from '../function/exportFunction/shuffleSta
 
 domStation.audioFromTrack.addEventListener('ended', () => 
 {
-  if (storeStation.isShuffleTrackMode)
+  if (storeStation.isShuffleTrack)
   {
     if (!storeStation.tracksArray.length)
     {
       return
     }
 
-    if (!storeStation.shuffledIndexes.length)
+    if (!storeStation.shuffledTracksArray.length)
     {
       shuffleTrack()
     }
 
-    const len = storeStation.shuffledIndexes.length
-    const nextPos = ((storeStation.shuffleIndex + 1) % len)
-    storeStation.shuffleIndex = nextPos
-    const safeIndex = storeStation.shuffledIndexes[nextPos]
+    const shuffledTracksArraySize = storeStation.shuffledTracksArray.length
 
+    const nextTrackPosition = ((storeStation.shuffleTrackIndex + 1) % shuffledTracksArraySize)
+    storeStation.shuffleTrackIndex = nextTrackPosition
+
+    const safeIndex = storeStation.shuffledTracksArray[nextTrackPosition]
     storeStation.currentTrackIndex = safeIndex
 
     playTrack(safeIndex)
 
-    domStation.audioFromTrack.pause()
-    domStation.audioFromTrack.currentTime = 0
-
     updateUI()
     preloadNext()
 
-    console.log('Shuffle next:', storeStation.tracksArray[safeIndex]?.name)
+    console.log('Next Shuffle Playlist:', storeStation.tracksArray[safeIndex]?.name)
 
     return
   }
 
-  if (storeStation.isPlayOneTrackMode)
+  if (storeStation.isPlayOneTrack)
   {
     if (!storeStation.tracksArray.length)
     {
       return
     }
 
-    const nextIndex = getNextPlaylistTrackIndex()
-    if (nextIndex === null)
+    const nextTrackIndex = getNextPlaylistTrackIndex()
+    if (nextTrackIndex === null)
     {
       return
     }
 
-    const nextTrack = storeStation.tracksArray[nextIndex]
+    const nextTrack = storeStation.tracksArray[nextTrackIndex]
 
-    const current = storeStation.tracksArray[storeStation.currentTrackIndex]
-    if (current)
+    const currentTrack = storeStation.tracksArray[storeStation.currentTrackIndex]
+    if (currentTrack)
     {
-      localStorage.setItem('seek_track_' + current.id, 0)
+      localStorage.setItem('seek_track_' + currentTrack.id, 0)
     }
 
-    storeStation.currentTrackIndex = nextIndex
+    storeStation.currentTrackIndex = nextTrackIndex
 
     const finishPlayOneCue = () =>
     {
@@ -74,10 +72,16 @@ domStation.audioFromTrack.addEventListener('ended', () =>
       updateUI()
       preloadNext()
 
-      console.log('Ready next track (Paused):', nextTrack?.name || 'Unknown')
+      console.log('Ready Next Track (Paused):', (nextTrack?.name || 'Unknown Next Track'))
     }
 
-    const playOnePreloadOk = (storeStation.nextTrackURL?.startsWith('blob:') && (storeStation.nextPreloadedTrackIndex === nextIndex))
+    const playOnePreloadOk = 
+    (
+      (storeStation.nextTrackURL?.startsWith('blob:'))
+      && 
+      (storeStation.nextPreloadedTrackIndex === nextTrackIndex)
+    )
+
     if (playOnePreloadOk)
     {
       if (storeStation.currentTrackURL)
@@ -101,7 +105,7 @@ domStation.audioFromTrack.addEventListener('ended', () =>
     return
   }
 
-  if (storeStation.isReplayTrackMode)
+  if (storeStation.isReplayTrack)
   {
     domStation.audioFromTrack.currentTime = 0
     domStation.audioFromTrack.play()
@@ -110,10 +114,10 @@ domStation.audioFromTrack.addEventListener('ended', () =>
     return
   }
 
-  const current = storeStation.tracksArray[storeStation.currentTrackIndex]
-  if (current)
+  const currentTrack = storeStation.tracksArray[storeStation.currentTrackIndex]
+  if (currentTrack)
   {
-    localStorage.setItem('seek_track_' + current.id, 0)
+    localStorage.setItem(('seek_track_' + currentTrack.id), 0)
   }
 
   if (!storeStation.tracksArray.length)
@@ -121,16 +125,24 @@ domStation.audioFromTrack.addEventListener('ended', () =>
     return
   }
 
-  const nextIndex = getNextPlaylistTrackIndex()
-  if (nextIndex === null)
+  const nextTrackIndex = getNextPlaylistTrackIndex()
+  if (nextTrackIndex === null)
   {
     return
   }
 
-  const preloadMatchesNext = (storeStation.nextTrackURL && (storeStation.nextPreloadedTrackIndex === nextIndex) && storeStation.nextTrackURL.startsWith('blob:'))
+  const preloadMatchesNext = 
+  (
+    (storeStation.nextTrackURL)
+    && 
+    (storeStation.nextPreloadedTrackIndex === nextTrackIndex) 
+    && 
+    (storeStation.nextTrackURL.startsWith('blob:'))
+  )
+
   if (preloadMatchesNext)
   {
-    storeStation.currentTrackIndex = nextIndex
+    storeStation.currentTrackIndex = nextTrackIndex
     if (storeStation.currentTrackURL)
     {
       URL.revokeObjectURL(storeStation.currentTrackURL)
@@ -143,7 +155,7 @@ domStation.audioFromTrack.addEventListener('ended', () =>
     domStation.audioFromTrack.src = storeStation.currentTrackURL
     domStation.audioFromTrack.play().catch(err =>
     {
-      console.log('Play Failed:', err)
+      console.log('Play Track Failed:', err)
     })
 
     updateUI()
@@ -152,8 +164,8 @@ domStation.audioFromTrack.addEventListener('ended', () =>
 
   else
   {
-    playTrack(nextIndex)
-    console.log('Playing Next Track:', storeStation.tracksArray[nextIndex].name)
+    playTrack(nextTrackIndex)
+    console.log('Playing Next Track:', storeStation.tracksArray[nextTrackIndex].name)
   }
 })
 
@@ -165,10 +177,15 @@ domStation.audioFromTrack.addEventListener('timeupdate', () =>
     domStation.seekBar.max = domStation.audioFromTrack.duration
     domStation.seekBar.value = domStation.audioFromTrack.currentTime
 
-    if ((storeStation.currentTrackIndex !== -1) && (storeStation.tracksArray[storeStation.currentTrackIndex]))
+    if 
+    (
+      (storeStation.currentTrackIndex !== -1) 
+      && 
+      (storeStation.tracksArray[storeStation.currentTrackIndex])
+    )
     {
       const track = storeStation.tracksArray[storeStation.currentTrackIndex]
-      localStorage.setItem('seek_track_' + track.id, domStation.audioFromTrack.currentTime)
+      localStorage.setItem(('seek_track_' + track.id), domStation.audioFromTrack.currentTime)
     }
   }
 })
@@ -194,8 +211,8 @@ domStation.seekBar.addEventListener('input', () =>
 
 const savedVolume = (Number(localStorage.getItem('volumeLevel')) || 0.5)
 domStation.audioFromTrack.volume = savedVolume
-domStation.volumeBar.value = (savedVolume * 10)
 
+domStation.volumeBar.value = (savedVolume * 10)
 domStation.volumeBar.addEventListener('input', () => 
 {
   const value = Math.max(0, Math.min(1, Number(domStation.volumeBar.value) / 10))
@@ -209,6 +226,6 @@ domStation.volumeBar.addEventListener('input', () =>
 
   else
   {
-    localStorage.setItem('volumeLevel', value);
+    localStorage.setItem('volumeLevel', value)
   }
 })

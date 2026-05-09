@@ -11,7 +11,7 @@ export function saveTrack(file)
 
     checkRequest.onsuccess = () => 
     {
-      if (checkRequest.result.some(t => t.name === file.name))
+      if (checkRequest.result.some(track => track.name === file.name))
       {
         return resolve()
       }

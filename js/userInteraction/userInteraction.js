@@ -18,7 +18,7 @@ document.addEventListener('keydown', event =>
   {        
     event.preventDefault()
 
-    if (storeStation.isPlayOneTrackMode)
+    if (storeStation.isPlayOneTrack)
     {
       console.log('Cannot Play The Previous Track (Play One Song Until The End: On')
       return
@@ -32,7 +32,7 @@ document.addEventListener('keydown', event =>
   {
     event.preventDefault()
 
-    if (storeStation.isPlayOneTrackMode)
+    if (storeStation.isPlayOneTrack)
     {
       console.log('Cannot Play The Next Track (Play One Song Until The End: On')
       return
@@ -41,6 +41,7 @@ document.addEventListener('keydown', event =>
     domStation.playNextTrackButton.click()
     console.log('Playing Next Track:', (storeStation.tracksArray[(storeStation.currentTrackIndex + 1) % storeStation.tracksArray.length].name))
   }
+
 
   else if ((event.key === 'ArrowLeft') && event.shiftKey)
   {
@@ -59,6 +60,7 @@ document.addEventListener('keydown', event =>
     console.log('Volume Down:', (Math.round(newVolume * 100) + '%'))
   }
 
+
   else if ((event.key === 'ArrowRight') && event.shiftKey)
   {
     event.preventDefault();
@@ -76,6 +78,7 @@ document.addEventListener('keydown', event =>
     console.log('Volume Up:', (Math.round(newVolume * 100) + '%'))
   }
 
+
   else if (event.key === 'ArrowLeft')
   {
     event.preventDefault();
@@ -92,6 +95,7 @@ document.addEventListener('keydown', event =>
     console.log('Seek Backward:', (Math.round(newSeek) + ' seconds'))
   }
 
+
   else if (event.key === 'ArrowRight')
   {
     event.preventDefault()
@@ -105,7 +109,7 @@ document.addEventListener('keydown', event =>
     domStation.audioFromTrack.currentTime = newSeek
     domStation.seekBar.value = newSeek
 
-    console.log('Seek Forward:', Math.round(newSeek) + ' seconds')
+    console.log('Seek Forward:', (Math.round(newSeek) + ' seconds'))
   }
 
 
@@ -129,6 +133,7 @@ document.addEventListener('keydown', event =>
       console.log('Pausing:', (storeStation.tracksArray[storeStation.currentTrackIndex]?.name || 'Unknown'))
     }
   }
+
 
   else if (event.key === 'm')
   {
@@ -159,22 +164,25 @@ document.addEventListener('keydown', event =>
 
 domStation.playPreviousTrackButton.addEventListener('click', () => 
 {
-  if (storeStation.isPlayOneTrackMode)
+  if (storeStation.isPlayOneTrack)
   {
     console.log('Cannot Play The Previous Track (Play One Song Until The End: On')
     return
   }
+
 
   if (storeStation.tracksArray.length < 2)
   {
     return
   }
 
+
   const previousIndex = getPreviousPlaylistTrackIndex()
   if (previousIndex === null)
   {
     return
   }
+
 
   playTrack(previousIndex)
   console.log('Playing Previous Track:', storeStation.tracksArray[previousIndex].name)
@@ -186,7 +194,12 @@ domStation.playPauseTrackButton.addEventListener('click', event =>
   const playTrackIcon = `<div class="play-track-icon"></div>`
   const pauseTrackIcon = `<div class="pause-track-icon"></div>`
 
-  if ((storeStation.currentTrackIndex === -1) || !domStation.audioFromTrack.src)
+  if 
+  (
+    (storeStation.currentTrackIndex === -1) 
+    || 
+    !domStation.audioFromTrack.src
+  )
   {
     return
   }
@@ -215,7 +228,7 @@ domStation.playPauseTrackButton.addEventListener('click', event =>
 
 domStation.playNextTrackButton.addEventListener('click', () =>
 {
-  if (storeStation.isPlayOneTrackMode)
+  if (storeStation.isPlayOneTrack)
   {
     console.log('Cannot Play The Next Track (Play One Song Until The End: On')
     return
@@ -226,12 +239,12 @@ domStation.playNextTrackButton.addEventListener('click', () =>
     return
   }
 
-  const nextIndex = getNextPlaylistTrackIndex()
-  if (nextIndex === null)
+  const nextTrackIndex = getNextPlaylistTrackIndex()
+  if (nextTrackIndex === null)
   {
     return
   }
 
-  playTrack(nextIndex)
-  console.log('Playing Next Track:', storeStation.tracksArray[nextIndex].name)
+  playTrack(nextTrackIndex)
+  console.log('Playing Next Track:', storeStation.tracksArray[nextTrackIndex].name)
 })

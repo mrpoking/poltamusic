@@ -1,5 +1,7 @@
 export const domStation = 
 {
+  themeSwitchButton: document.getElementById('themeSwitchButton'),
+
   playOneTrackButton: document.getElementById('playOneTrackButton'),
   replayTrackButton: document.getElementById('replayTrackButton'),
   shuffleTrackButton: document.getElementById('shuffleTrackButton'),
@@ -29,6 +31,7 @@ export const storeStation =
 
   currentTrackIndex: -1,
   currentTrackURL: null,
+
   nextTrackURL: null,
   nextPreloadedTrackIndex: -1,
 
@@ -37,16 +40,16 @@ export const storeStation =
 
   isPlaylistLoaded: false,
   isTrackFound: false,
-  searchTrackTimeout: null,
 
+  searchTrackTimeout: null,
   volumeBeforeMute: null,
 
-  isPlayOneTrackMode: false,
-  isReplayTrackMode: false,
-  isShuffleTrackMode: false,
+  isPlayOneTrack: false,
+  isReplayTrack: false,
+  isShuffleTrack: false,
 
-  shuffledIndexes: [],
-  shuffleIndex: 0,
+  shuffledTracksArray: [],
+  shuffleTrackIndex: 0,
 
   userInteractedEarly: false,
   needsMediaGestureToPlay: false,

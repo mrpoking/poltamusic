@@ -9,8 +9,7 @@ import { syncMediaSessionTrack, syncPlayPauseButtonIcon } from '../../userIntera
 export async function playTrack(index, options = {})
 {
   const { allowWhilePlayOne = false } = options
-
-  if (storeStation.isPlayOneTrackMode && !allowWhilePlayOne)
+  if (storeStation.isPlayOneTrack && !allowWhilePlayOne)
   {
     return
   }
@@ -25,6 +24,7 @@ export async function playTrack(index, options = {})
 
   storeStation.preloadToken++
   storeStation.nextPreloadedTrackIndex = -1
+
   if (storeStation.nextTrackURL)
   {
     URL.revokeObjectURL(storeStation.nextTrackURL)
@@ -60,12 +60,14 @@ export async function playTrack(index, options = {})
     domStation.audioFromTrack.currentTime = savedSeek
   }
 
-  const blob = (track.data instanceof Blob) ? (track.data) : (new Blob([track.data], { type: meta.type }))
+  const blob = (track.data instanceof Blob) 
+    ? (track.data) 
+    : (new Blob([track.data], { type: meta.type }))
+
+  storeStation.currentTrackIndex = index
   storeStation.currentTrackURL = URL.createObjectURL(blob)
 
   domStation.audioFromTrack.src = storeStation.currentTrackURL
-  storeStation.currentTrackIndex = index
-
   domStation.audioFromTrack.play()
     .then(() =>
     {
@@ -79,8 +81,8 @@ export async function playTrack(index, options = {})
       syncPlayPauseButtonIcon()
     })
 
-  const savedVolumeStr = localStorage.getItem('volume_track_' + meta.id)
-  if (savedVolumeStr === null) 
+  const savedVolumeString = localStorage.getItem('volume_track_' + meta.id)
+  if (savedVolumeString === null) 
   {
     const globalVolume = (Number(localStorage.getItem('volumeLevel')) || 0.5)
     domStation.audioFromTrack.volume = globalVolume
@@ -89,7 +91,7 @@ export async function playTrack(index, options = {})
   
   else 
   {
-    const savedSongVolume = Number(savedVolumeStr)
+    const savedSongVolume = Number(savedVolumeString)
     domStation.audioFromTrack.volume = savedSongVolume
     domStation.volumeBar.value = (savedSongVolume * 10)
   }
@@ -101,17 +103,16 @@ export async function playTrack(index, options = {})
   syncMediaSessionTrack(name)
 
   localStorage.setItem('lastSongIndex', index)
-
   storeStation.trackMetadataArray.forEach(item => item.classList.remove('active-track'))
-  
-  const activeRow = storeStation.trackMetadataArray.find(li => li && (Number(li.dataset.trackIndex) === index))
+
+  const activeRow = storeStation.trackMetadataArray.find(list => list && (Number(list.dataset.trackIndex) === index))
   if (activeRow)
   {
     activeRow.classList.add('active-track')
   }
 
   syncShuffleIndexToTrack(index)
-
+  
   preloadNext()
   updateUI()
 }

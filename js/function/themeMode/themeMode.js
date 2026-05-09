@@ -1,12 +1,10 @@
+import { domStation } from '../../myStation/exportMyStation.js'
+
+
 if (!localStorage.getItem('themeMode')) 
 {
   localStorage.setItem('themeMode', 'darkmode')
 }
-
-
-const themeSwitchButton = document.getElementById('themeSwitchButton')
-const lightmodeThemeSwitchIcon = `<div class="lightmode-theme-switch-icon"></div>`
-const darkmodeThemeSwitchIcon = `<div class="darkmode-theme-switch-icon"></div>`
 
 
 let themeMode = (localStorage.getItem('themeMode') === 'lightmode')
@@ -14,14 +12,15 @@ let themeMode = (localStorage.getItem('themeMode') === 'lightmode')
 
 function updateThemeUI()
 {
-  themeSwitchButton.innerHTML = (themeMode) ? (darkmodeThemeSwitchIcon) : (lightmodeThemeSwitchIcon)
+  domStation.themeSwitchButton.innerHTML = (themeMode) 
+    ? (`<div class="darkmode-theme-switch-icon"></div>`) 
+    : (`<div class="lightmode-theme-switch-icon"></div>`)
 }
 
 
-themeSwitchButton.addEventListener('click', () => 
+domStation.themeSwitchButton.addEventListener('click', () => 
 {
   themeMode = !themeMode
-
   localStorage.setItem('themeMode', (themeMode) ? ('lightmode') : ('darkmode'))
 
   updateThemeUI()
@@ -42,7 +41,6 @@ function applyThemeColors()
   ]
 
   const getSavedThemeMode = localStorage.getItem('themeMode')
-  document.body.style.backgroundImage = `var(--${getSavedThemeMode}-background-image)`
   colorVariables.forEach(colorVariable => 
   {
     document.body.style.setProperty(`--${ colorVariable }`, `var(--${ getSavedThemeMode }-${ colorVariable })`)
@@ -50,7 +48,7 @@ function applyThemeColors()
 }
 
 
-window.addEventListener("load", () => 
+window.addEventListener('load', () => 
 {
   updateThemeUI()
   applyThemeColors()

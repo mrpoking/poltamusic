@@ -26,8 +26,11 @@ export function updateUI()
     }
   })
 
-  const activeItem = storeStation.trackMetadataArray.find(item => item && (Number(item.dataset.trackIndex) === storeStation.currentTrackIndex))
-
+  const activeItem = storeStation.trackMetadataArray.find(item => 
+    (item )
+    && 
+    (Number(item.dataset.trackIndex) === storeStation.currentTrackIndex)
+  )
   if (activeItem)
   {
     activeItem.classList.add('active-track')

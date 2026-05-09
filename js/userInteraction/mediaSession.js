@@ -4,33 +4,43 @@ import { domStation, storeStation } from '../myStation/exportMyStation.js'
 const playTrackIconHtml = `<div class="play-track-icon"></div>`
 const pauseTrackIconHtml = `<div class="pause-track-icon"></div>`
 
-
 let initialized = false
 
 
 export function syncPlayPauseButtonIcon()
 {
   const audio = domStation.audioFromTrack
-
-  if ((storeStation.currentTrackIndex === -1) && !audio.src)
+  if 
+  (
+    (storeStation.currentTrackIndex === -1) 
+    && 
+    (!audio.src)
+  )
   {
     return
   }
 
-  domStation.playPauseTrackButton.innerHTML = (audio.paused) ? (pauseTrackIconHtml) : (playTrackIconHtml)
+  domStation.playPauseTrackButton.innerHTML = (audio.paused) 
+    ? (pauseTrackIconHtml) 
+    : (playTrackIconHtml)
 }
 
 
 function updatePositionState()
 {
-  if (!('mediaSession' in navigator) || !('setPositionState' in navigator.mediaSession))
+  if 
+  (
+    (!('mediaSession' in navigator))
+    || 
+    (!('setPositionState' in navigator.mediaSession))
+  )
   {
     return
   }
 
   const audio = domStation.audioFromTrack
-
   const duration = audio.duration
+  
   if (!duration || !Number.isFinite(duration))
   {
     return
@@ -59,8 +69,7 @@ export function syncMediaSessionTrack(displayTitle)
     return
   }
 
-  const title = displayTitle?.trim() || 'My Music'
-
+  const title = (displayTitle?.trim() || 'My Music')
   try
   {
     navigator.mediaSession.metadata = new MediaMetadata({
@@ -72,7 +81,7 @@ export function syncMediaSessionTrack(displayTitle)
 
   catch (error)
   {
-    console.warn('MediaSession metadata:', error)
+    console.warn('MediaSession Metadata:', error)
   }
 
   updatePositionState()
@@ -91,9 +100,7 @@ export function setupMediaSession()
   const audio = domStation.audioFromTrack
   const safePlay = () =>
   {
-    audio.play()
-      .catch(() => {})
-      .finally(() => syncPlayPauseButtonIcon())
+    audio.play().catch(() => {}).finally(() => syncPlayPauseButtonIcon())
   }
 
   navigator.mediaSession.setActionHandler('play', () =>
@@ -110,7 +117,7 @@ export function setupMediaSession()
 
   navigator.mediaSession.setActionHandler('nexttrack', () =>
   {
-    if (storeStation.isPlayOneTrackMode)
+    if (storeStation.isPlayOneTrack)
     {
       if (audio.paused && audio.src)
       {
@@ -120,7 +127,14 @@ export function setupMediaSession()
       return
     }
 
-    if (storeStation.needsMediaGestureToPlay && audio.paused && audio.src)
+    if 
+    (
+      (storeStation.needsMediaGestureToPlay )
+      && 
+      (audio.paused)
+      && 
+      (audio.src)
+    )
     {
       safePlay()
       return
@@ -129,9 +143,10 @@ export function setupMediaSession()
     domStation.playNextTrackButton.click()
   })
 
+
   navigator.mediaSession.setActionHandler('previoustrack', () =>
   {
-    if (storeStation.isPlayOneTrackMode)
+    if (storeStation.isPlayOneTrack)
     {
       return
     }
@@ -143,7 +158,12 @@ export function setupMediaSession()
   {
     navigator.mediaSession.setActionHandler('seekto', event =>
     {
-      if (event.seekTime != null && Number.isFinite(event.seekTime))
+      if 
+      (
+        (event.seekTime != null) 
+        && 
+        (Number.isFinite(event.seekTime))
+      )
       {
         audio.currentTime = event.seekTime
         updatePositionState()
@@ -153,13 +173,14 @@ export function setupMediaSession()
 
   catch
   {
-    
+    /* Some Browsers Reject Until Metadata Is Ready */
   }
 
   audio.addEventListener('play', () =>
   {
     storeStation.needsMediaGestureToPlay = false
     navigator.mediaSession.playbackState = 'playing'
+
     syncPlayPauseButtonIcon()
     updatePositionState()
   })
@@ -175,6 +196,5 @@ export function setupMediaSession()
   audio.addEventListener('seeked', updatePositionState)
 
   navigator.mediaSession.playbackState = (audio.paused) ? ('paused') : ('playing')
-
   syncPlayPauseButtonIcon()
 }

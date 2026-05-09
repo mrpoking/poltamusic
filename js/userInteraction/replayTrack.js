@@ -1,20 +1,30 @@
 import { domStation, storeStation } from '../myStation/exportMyStation.js'
 import { pauseShufflePlayback, resumeShufflePlaybackIfOrdered } from '../function/exportFunction/shuffleState.js'
-import { renderPlaylist } from '../myStation/loadPlaylist.js'
+import { renderPlaylist } from '../function/loadPlaylist/renderPlaylist.js'
+
+
+function refreshPlaylistView()
+{
+  const isSearching = (domStation.searchTrackBar.value.trim().length > 0)
+  if (!isSearching)
+  {
+    renderPlaylist()
+  }
+}
 
 
 domStation.replayTrackButton.addEventListener('click', () =>
 {
-  storeStation.isReplayTrackMode = !storeStation.isReplayTrackMode
-  domStation.replayTrackButton.classList.toggle('replay-track-button-selected', storeStation.isReplayTrackMode)
+  storeStation.isReplayTrack = !storeStation.isReplayTrack
+  domStation.replayTrackButton.classList.toggle('replay-track-button-selected', storeStation.isReplayTrack)
 
-  if (storeStation.isReplayTrackMode)
+  if (storeStation.isReplayTrack)
   {
-    storeStation.isPlayOneTrackMode = false
+    storeStation.isPlayOneTrack = false
     domStation.playOneTrackButton.classList.remove('play-one-track-button-selected')
     
     pauseShufflePlayback()
-    renderPlaylist()
+    refreshPlaylistView()
 
     console.log('Replay The Track: On')
   }
@@ -22,7 +32,7 @@ domStation.replayTrackButton.addEventListener('click', () =>
   else
   {
     resumeShufflePlaybackIfOrdered()
-    renderPlaylist()
+    refreshPlaylistView()
 
     console.log('Replay The Track: Off')
   }

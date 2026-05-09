@@ -18,56 +18,58 @@ export function deleteTrack(event, id)
 {
   event.stopPropagation()
 
-  const indexToDelete = storeStation.tracksArray.findIndex(t => t.id === id)
+  const indexToDelete = storeStation.tracksArray.findIndex(track => track.id === id)
   if (indexToDelete === -1)
   {
     return
   }
 
-  const isCurrent = (indexToDelete === storeStation.currentTrackIndex)
-  if (!confirm('Delete This Track?'))
+  const isCurrentTrack = (indexToDelete === storeStation.currentTrackIndex)
+  if (!confirm('Delete This Track?!'))
   {
     return
   }
 
-  const oldLen = storeStation.tracksArray.length
+  const oldTracksArraySize = storeStation.tracksArray.length
 
-  let playNewIndex = 0
-  if (isCurrent && (oldLen > 1))
+  let playNewTrackIndex = 0
+  if (isCurrentTrack && (oldTracksArraySize > 1))
   {
-    let playOldIndex
-    if (
-      storeStation.isShuffleTrackMode
+    let playOldTrackIndex
+    if 
+    (
+      (storeStation.isShuffleTrack)
       &&
-      (storeStation.shuffledIndexes.length >= 2)
+      (storeStation.shuffledTracksArray.length >= 2)
     )
     {
-      const position = storeStation.shuffledIndexes.indexOf(indexToDelete)
-      if (position !== -1)
+      const trackPosition = storeStation.shuffledTracksArray.indexOf(indexToDelete)
+      if (trackPosition !== -1)
       {
-        const nextPosition = ((position + 1) % storeStation.shuffledIndexes.length)
-        playOldIndex = storeStation.shuffledIndexes[nextPosition]
+        const nextTrackPosition = ((trackPosition + 1) % storeStation.shuffledTrackArray.length)
+        playOldTrackIndex = storeStation.shuffledTracksArray[nextTrackPosition]
       }
 
       else
       {
-        playOldIndex = ((indexToDelete + 1) % oldLen)
+        playOldTrackIndex = ((indexToDelete + 1) % oldTracksArraySize)
       }
     }
 
     else
     {
-      playOldIndex = ((indexToDelete >= (oldLen - 1)) ? (0) : (indexToDelete + 1))
+      playOldTrackIndex = ((indexToDelete >= (oldTracksArraySize - 1)) ? (0) : (indexToDelete + 1))
     }
 
-    playNewIndex = mapIndexAfterDelete(playOldIndex, indexToDelete)
+    playNewTrackIndex = mapIndexAfterDelete(playOldTrackIndex, indexToDelete)
   }
 
   const transaction = storeStation.playlistDB.transaction('tracks', 'readwrite')
   transaction.objectStore('tracks').delete(id)
+
   transaction.oncomplete = () =>
   {
-    if (isCurrent)
+    if (isCurrentTrack)
     {
       if (storeStation.currentTrackURL)
       {
@@ -78,43 +80,55 @@ export function deleteTrack(event, id)
       if (storeStation.nextTrackURL)
       {
         URL.revokeObjectURL(storeStation.nextTrackURL)
+
         storeStation.nextTrackURL = null
         storeStation.nextPreloadedTrackIndex = -1
       }
     }
 
-    if (storeStation.isShuffleTrackMode && storeStation.shuffledIndexes.length)
+    if 
+    (
+      (storeStation.isShuffleTrack)
+      && 
+      (storeStation.shuffledTracksArray.length)
+    )
     {
-      storeStation.shuffledIndexes = storeStation.shuffledIndexes
-        .filter(i => i !== indexToDelete)
-        .map(i => ((i > indexToDelete) ? (i - 1) : i))
-
+      storeStation.shuffledTracksArray = storeStation.shuffledTracksArray.filter(index => index !== indexToDelete).map(index => ((index > indexToDelete) ? (index - 1) : index))
       if (storeStation.currentTrackIndex > indexToDelete)
       {
         storeStation.currentTrackIndex--
       }
 
-      storeStation.shuffleIndex = storeStation.shuffledIndexes.indexOf(storeStation.currentTrackIndex)
-      if (storeStation.shuffleIndex < 0)
+      storeStation.shuffleTrackIndex = storeStation.shuffledTracksArray.indexOf(storeStation.currentTrackIndex)
+      if (storeStation.shuffleTrackIndex < 0)
       {
-        storeStation.shuffleIndex = 0
+        storeStation.shuffleTrackIndex = 0
       }
 
       persistShuffleState()
     }
 
-    const importLoad = import('../myStation/loadPlaylist.js')
-
-    if (isCurrent && (oldLen > 1))
+    const importLoad = import('../function/loadPlaylist/loadPlaylist.js')
+    if 
+    (
+      (isCurrentTrack)
+      &&
+      (oldTracksArraySize > 1)
+    )
     {
       importLoad.then(({ loadPlaylist }) =>
       {
         loadPlaylist()
-        setTimeout(() => playTrack(playNewIndex, { allowWhilePlayOne: true }), 40)
+        setTimeout(() => playTrack(playNewTrackIndex, { allowWhilePlayOne: true }), 40)
       })
     }
 
-    else if (isCurrent && (oldLen === 1))
+    else if 
+    (
+      (isCurrentTrack )
+      && 
+      (oldTracksArraySize === 1)
+    )
     {
       if (storeStation.currentTrackURL)
       {
@@ -125,6 +139,7 @@ export function deleteTrack(event, id)
       if (storeStation.nextTrackURL)
       {
         URL.revokeObjectURL(storeStation.nextTrackURL)
+        
         storeStation.nextTrackURL = null
         storeStation.nextPreloadedTrackIndex = -1
       }

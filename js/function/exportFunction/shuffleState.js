@@ -17,17 +17,33 @@ function clearShuffleStorage()
 export function hasValidShuffleOrder()
 {
   const tracksArraySize = storeStation.tracksArray.length
-  if (!tracksArraySize || (storeStation.shuffledIndexes.length !== tracksArraySize))
+  if 
+  (
+    (!tracksArraySize)
+    || 
+    (storeStation.shuffledTracksArray.length !== tracksArraySize)
+  )
   {
     return false
   }
 
-  if ((new Set(storeStation.shuffledIndexes)).size !== tracksArraySize)
+  if 
+  (
+    ((new Set(storeStation.shuffledTracksArray)).size !== tracksArraySize)
+  )
   {
     return false
   }
 
-  return storeStation.shuffledIndexes.every(index => (Number.isInteger(index) && (index >= 0) && (index < tracksArraySize)))
+  return storeStation.shuffledTracksArray.every(index => 
+  (
+    (Number.isInteger(index))
+    && 
+    (index >= 0) 
+    && 
+    (index < tracksArraySize)
+  )
+  )
 }
 
 
@@ -35,9 +51,9 @@ export function persistShuffleState()
 {
   if (hasValidShuffleOrder())
   {
-    localStorage.setItem(SHUFFLE_ORDER_KEY, JSON.stringify(storeStation.shuffledIndexes))
-    localStorage.setItem(SHUFFLE_POS_KEY, String(storeStation.shuffleIndex))
-    localStorage.setItem(SHUFFLE_MODE_KEY, storeStation.isShuffleTrackMode ? '1' : '0')
+    localStorage.setItem(SHUFFLE_ORDER_KEY, JSON.stringify(storeStation.shuffledTracksArray))
+    localStorage.setItem(SHUFFLE_POS_KEY, String(storeStation.shuffleTrackIndex))
+    localStorage.setItem(SHUFFLE_MODE_KEY, storeStation.isShuffleTrack ? ('1') : ('0'))
 
     return
   }
@@ -65,45 +81,63 @@ export function restoreShuffleFromStorage()
     const posRaw = Number(localStorage.getItem(SHUFFLE_POS_KEY))
     const tracksArraySize = storeStation.tracksArray.length
 
-    if (!Array.isArray(order) || (order.length !== tracksArraySize))
+    if 
+    (
+      (!Array.isArray(order))
+      || 
+      (order.length !== tracksArraySize)
+    )
     {
       clearShuffleStorage()
 
-      storeStation.shuffledIndexes = []
-      storeStation.shuffleIndex = 0
-      storeStation.isShuffleTrackMode = false
+      storeStation.shuffledTracksArray = []
+      storeStation.shuffleTrackIndex = 0
+      storeStation.isShuffleTrack = false
 
       domStation.shuffleTrackButton.classList.remove('shuffle-track-button-selected')
       return
     }
 
-    const valid = order.every(index => (Number.isInteger(index) && (index >= 0) && (index < tracksArraySize)))
-    if (!valid || ((new Set(order)).size !== tracksArraySize))
+    const valid = order.every(index => 
+    (
+      (Number.isInteger(index))
+      && 
+      (index >= 0) 
+      && 
+      (index < tracksArraySize))
+    )
+    if 
+    (
+      (!valid)
+      || 
+      ((new Set(order)).size !== tracksArraySize)
+    )
     {
       clearShuffleStorage()
       
-      storeStation.shuffledIndexes = []
-      storeStation.shuffleIndex = 0
-      storeStation.isShuffleTrackMode = false
+      storeStation.shuffledTracksArray = []
+      storeStation.shuffleTrackIndex = 0
+      storeStation.isShuffleTrack = false
 
       domStation.shuffleTrackButton.classList.remove('shuffle-track-button-selected')
       return
     }
 
-    storeStation.shuffledIndexes = order
-    storeStation.shuffleIndex = Math.min(Math.max(0, posRaw), (tracksArraySize - 1))
-    storeStation.isShuffleTrackMode = (localStorage.getItem(SHUFFLE_MODE_KEY) === '1')
+    storeStation.shuffledTracksArray = order
+    storeStation.shuffleTrackIndex = Math.min(Math.max(0, posRaw), (tracksArraySize - 1))
+    storeStation.isShuffleTrack = (localStorage.getItem(SHUFFLE_MODE_KEY) === '1')
 
     domStation.shuffleTrackButton.classList.toggle('shuffle-track-button-selected', storeStation.isShuffleTrackMode)
   }
+
 
   catch
   {
     clearShuffleStorage()
 
-    storeStation.shuffledIndexes = []
-    storeStation.shuffleIndex = 0
-    storeStation.isShuffleTrackMode = false
+    storeStation.shuffledTracksArray = []
+    storeStation.shuffleTrackIndex = 0
+    storeStation.isShuffleTrack = false
     
     domStation.shuffleTrackButton.classList.remove('shuffle-track-button-selected')
   }
@@ -112,9 +146,9 @@ export function restoreShuffleFromStorage()
 
 export function clearShuffleMode()
 {
-  storeStation.isShuffleTrackMode = false
-  storeStation.shuffledIndexes = []
-  storeStation.shuffleIndex = 0
+  storeStation.isShuffleTrack = false
+  storeStation.shuffledTracksArray = []
+  storeStation.shuffleTrackIndex = 0
 
   domStation.shuffleTrackButton.classList.remove('shuffle-track-button-selected')
   clearShuffleStorage()
@@ -123,7 +157,7 @@ export function clearShuffleMode()
 
 export function pauseShufflePlayback()
 {
-  storeStation.isShuffleTrackMode = false
+  storeStation.isShuffleTrack = false
   domStation.shuffleTrackButton.classList.remove('shuffle-track-button-selected')
 
   persistShuffleState()
@@ -137,7 +171,7 @@ export function resumeShufflePlaybackIfOrdered()
     return
   }
 
-  storeStation.isShuffleTrackMode = true
+  storeStation.isShuffleTrack = true
   domStation.shuffleTrackButton.classList.add('shuffle-track-button-selected')
 
   persistShuffleState()
@@ -146,15 +180,20 @@ export function resumeShufflePlaybackIfOrdered()
 
 export function syncShuffleIndexToTrack(trackIndex)
 {
-  if (!hasValidShuffleOrder() || (trackIndex < 0))
+  if 
+  (
+    (!hasValidShuffleOrder())
+    || 
+    (trackIndex < 0)
+  )
   {
     return
   }
 
-  const position = storeStation.shuffledIndexes.indexOf(trackIndex)
-  if (position !== -1)
+  const trackPosition = storeStation.shuffledTracksArray.indexOf(trackIndex)
+  if (trackPosition !== -1)
   {
-    storeStation.shuffleIndex = position
+    storeStation.shuffleTrackIndex = trackPosition
     persistShuffleState()
   }
 }
@@ -170,14 +209,14 @@ export function getNextPlaylistTrackIndex()
 
   if (hasValidShuffleOrder())
   {
-    const position = storeStation.shuffledIndexes.indexOf(storeStation.currentTrackIndex)
-    if (position === -1)
+    const trackPosition = storeStation.shuffledTracksArray.indexOf(storeStation.currentTrackIndex)
+    if (trackPosition === -1)
     {
-      return storeStation.shuffledIndexes[0]
+      return storeStation.shuffledTracksArray[0]
     }
 
-    const nextPosition = ((position + 1) % tracksArraySize)
-    return storeStation.shuffledIndexes[nextPosition]
+    const nextPosition = ((trackPosition + 1) % tracksArraySize)
+    return storeStation.shuffledTracksArray[nextPosition]
   }
 
   return ((storeStation.currentTrackIndex + 1) % tracksArraySize)
@@ -194,14 +233,14 @@ export function getPreviousPlaylistTrackIndex()
 
   if (hasValidShuffleOrder())
   {
-    const position = storeStation.shuffledIndexes.indexOf(storeStation.currentTrackIndex)
-    if (position === -1)
+    const trackPosition = storeStation.shuffledTracksArray.indexOf(storeStation.currentTrackIndex)
+    if (trackPosition === -1)
     {
-      return storeStation.shuffledIndexes[tracksArraySize - 1]
+      return storeStation.shuffledTracksArray[tracksArraySize - 1]
     }
 
-    const prevPosition = ((position - 1) + tracksArraySize) % tracksArraySize
-    return storeStation.shuffledIndexes[prevPosition]
+    const previousPosition = ((trackPosition - 1) + tracksArraySize) % tracksArraySize
+    return storeStation.shuffledTracksArray[previousPosition]
   }
 
   let previousIndex = (storeStation.currentTrackIndex - 1)

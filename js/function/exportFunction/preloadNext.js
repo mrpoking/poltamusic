@@ -11,8 +11,8 @@ export function preloadNext()
   }
 
   const token = ++storeStation.preloadToken
-  
   const nextIndex = getNextPlaylistTrackIndex()
+  
   if (nextIndex === null)
   {
     return
@@ -21,7 +21,12 @@ export function preloadNext()
   const nextMeta = storeStation.tracksArray[nextIndex]
   getTrackData(nextMeta.id).then(track => 
   {
-    if ((token !== storeStation.preloadToken) || (!track?.data))
+    if 
+    (
+      (token !== storeStation.preloadToken) 
+      || 
+      (!track?.data)
+    )
     {
       return
     }
@@ -33,7 +38,10 @@ export function preloadNext()
 
     try 
     {
-      const blob = (track.data instanceof Blob) ? (track.data) : (new Blob([track.data], { type: nextMeta.type }))
+      const blob = (track.data instanceof Blob) 
+        ? (track.data) 
+        : (new Blob([track.data], { type: nextMeta.type }))
+        
       storeStation.nextTrackURL = URL.createObjectURL(blob)
       storeStation.nextPreloadedTrackIndex = nextIndex
     }
@@ -42,6 +50,7 @@ export function preloadNext()
     {
       storeStation.nextTrackURL = null
       storeStation.nextPreloadedTrackIndex = -1
+
       console.error('Preload Error:', error)
     }
   })
