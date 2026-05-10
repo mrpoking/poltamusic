@@ -22,7 +22,6 @@ domStation.searchTrackBar.addEventListener('input', () =>
       const isMatching = track.name.toLowerCase().includes(value)
 
       data.style.display = (isMatching) ? ('') : ('none')
-      
       if (isMatching)
       {
         trackHasFound = true
@@ -31,5 +30,5 @@ domStation.searchTrackBar.addEventListener('input', () =>
 
     noResultsLayout.style.display = (trackHasFound) ? ('none') : ('')
     storeStation.isTrackFound = trackHasFound
-  }, 145)
+  }, 100)
 })

@@ -92,9 +92,10 @@ export function restoreShuffleFromStorage()
 
       storeStation.shuffledTracksArray = []
       storeStation.shuffleTrackIndex = 0
-      storeStation.isShuffleTrack = false
 
+      storeStation.isShuffleTrack = false
       domStation.shuffleTrackButton.classList.remove('shuffle-track-button-selected')
+      
       return
     }
 

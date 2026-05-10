@@ -41,7 +41,12 @@ function updatePositionState()
   const audio = domStation.audioFromTrack
   const duration = audio.duration
   
-  if (!duration || !Number.isFinite(duration))
+  if 
+  (
+    (!duration)
+    ||
+    (!Number.isFinite(duration))
+  )
   {
     return
   }
@@ -50,7 +55,7 @@ function updatePositionState()
   {
     navigator.mediaSession.setPositionState({
       duration,
-      playbackRate: audio.playbackRate || 1,
+      playbackRate: (audio.playbackRate || 1),
       position: Math.min(Math.max(0, audio.currentTime), duration),
     })
   }
@@ -69,7 +74,13 @@ export function syncMediaSessionTrack(displayTitle)
     return
   }
 
-  const title = (displayTitle?.trim() || 'My Music')
+  const title = 
+  (
+    (displayTitle?.trim())
+    ||
+    ('My Music')
+  )
+
   try
   {
     navigator.mediaSession.metadata = new MediaMetadata({
@@ -90,7 +101,12 @@ export function syncMediaSessionTrack(displayTitle)
 
 export function setupMediaSession()
 {
-  if (!('mediaSession' in navigator) || initialized)
+  if 
+  (
+    (!('mediaSession' in navigator))
+    || 
+    (initialized)
+  )
   {
     return
   }
@@ -119,7 +135,12 @@ export function setupMediaSession()
   {
     if (storeStation.isPlayOneTrack)
     {
-      if (audio.paused && audio.src)
+      if 
+      (
+        (audio.paused)
+        &&
+        (audio.src)
+      )
       {
         safePlay()
       }
@@ -129,7 +150,7 @@ export function setupMediaSession()
 
     if 
     (
-      (storeStation.needsMediaGestureToPlay )
+      (storeStation.needsMediaGestureToPlay)
       && 
       (audio.paused)
       && 

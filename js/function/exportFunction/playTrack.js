@@ -54,11 +54,7 @@ export async function playTrack(index, options = {})
     URL.revokeObjectURL(storeStation.currentTrackURL)
   }
 
-  const savedSeek = Number(localStorage.getItem('seek_track_' + meta.id))
-  if (!Number.isNaN(savedSeek))
-  {
-    domStation.audioFromTrack.currentTime = savedSeek
-  }
+  domStation.audioFromTrack.currentTime = 0
 
   const blob = (track.data instanceof Blob) 
     ? (track.data) 

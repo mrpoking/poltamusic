@@ -23,7 +23,7 @@ export function preloadNext()
   {
     if 
     (
-      (token !== storeStation.preloadToken) 
+      (token !== storeStation.preloadToken)
       || 
       (!track?.data)
     )

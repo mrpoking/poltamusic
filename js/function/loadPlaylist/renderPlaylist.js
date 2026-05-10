@@ -60,7 +60,12 @@ export function renderPlaylist()
       const isCurrentTrack = (trackIndex === storeStation.currentTrackIndex)
       const hasCurrentSource = Boolean(domStation.audioFromTrack.src)
 
-      if (isCurrentTrack && hasCurrentSource)
+      if 
+      (
+        (isCurrentTrack) 
+        && 
+        (hasCurrentSource)
+      )
       {
         if (domStation.audioFromTrack.paused)
         {
@@ -68,12 +73,6 @@ export function renderPlaylist()
         }
 
         return
-      }
-      
-      const track = storeStation.tracksArray[trackIndex]
-      if (track)
-      {
-        localStorage.setItem('seek_track_' + track.id, 0)
       }
 
       playTrack(trackIndex, { allowWhilePlayOne: storeStation.isPlayOneTrack }).then(() =>
@@ -95,3 +94,15 @@ export function renderPlaylist()
     domStation.userPlaylistLayout.appendChild(list)
   })
 }
+
+
+domStation.audioFromTrack.addEventListener('timeupdate', () =>
+{
+  const id = storeStation.tracksArray[storeStation.currentTrackIndex]?.id
+  if (!id)
+  {
+    return
+  }
+
+  localStorage.setItem('seek_track_' + id, domStation.audioFromTrack.currentTime)
+})

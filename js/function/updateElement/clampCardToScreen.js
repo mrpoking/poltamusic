@@ -124,17 +124,19 @@ const elementToResize = document.querySelector('.user-controls-layout')
 const resizer = document.createElement('div');
 const savedSize = JSON.parse(localStorage.getItem('controlSize'))
 
-
 const minWidth = 120;
 const minHeight = 45;
+
 const maxWidth = 300;
 const maxHeight = 250;
 
 
 resizer.style.right = 0;
 resizer.style.bottom = 0;
+
 resizer.style.width = '0.625em'
 resizer.style.height = '0.625em'
+
 resizer.style.cursor = 'se-resize'
 resizer.style.position = 'absolute'
 

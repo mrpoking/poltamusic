@@ -27,7 +27,7 @@ export function updateUI()
   })
 
   const activeItem = storeStation.trackMetadataArray.find(item => 
-    (item )
+    (item)
     && 
     (Number(item.dataset.trackIndex) === storeStation.currentTrackIndex)
   )

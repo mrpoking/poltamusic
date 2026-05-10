@@ -6,7 +6,6 @@ if (!localStorage.getItem('themeMode'))
   localStorage.setItem('themeMode', 'darkmode')
 }
 
-
 let themeMode = (localStorage.getItem('themeMode') === 'lightmode')
 
 

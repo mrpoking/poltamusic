@@ -52,13 +52,6 @@ domStation.audioFromTrack.addEventListener('ended', () =>
     }
 
     const nextTrack = storeStation.tracksArray[nextTrackIndex]
-
-    const currentTrack = storeStation.tracksArray[storeStation.currentTrackIndex]
-    if (currentTrack)
-    {
-      localStorage.setItem('seek_track_' + currentTrack.id, 0)
-    }
-
     storeStation.currentTrackIndex = nextTrackIndex
 
     const finishPlayOneCue = () =>
@@ -110,14 +103,8 @@ domStation.audioFromTrack.addEventListener('ended', () =>
     domStation.audioFromTrack.currentTime = 0
     domStation.audioFromTrack.play()
 
-    console.log('Replaying Track:', (storeStation.tracksArray[storeStation.currentTrackIndex]?.name || 'Unknown'))
+    console.log('Replaying Track:', (storeStation.tracksArray[storeStation.currentTrackIndex]?.name || 'Unknown Track'))
     return
-  }
-
-  const currentTrack = storeStation.tracksArray[storeStation.currentTrackIndex]
-  if (currentTrack)
-  {
-    localStorage.setItem(('seek_track_' + currentTrack.id), 0)
   }
 
   if (!storeStation.tracksArray.length)
@@ -194,7 +181,12 @@ domStation.audioFromTrack.addEventListener('timeupdate', () =>
 domStation.audioFromTrack.addEventListener('error', () => 
 {
   const error = domStation.audioFromTrack.error
-  if (!error || (error.code === 1))
+  if 
+  (
+    (!error)
+    ||
+    (error.code === 1)
+  )
   {
     return
   }
@@ -218,7 +210,12 @@ domStation.volumeBar.addEventListener('input', () =>
   const value = Math.max(0, Math.min(1, Number(domStation.volumeBar.value) / 10))
   domStation.audioFromTrack.volume = value;
 
-  if ((storeStation.currentTrackIndex !== -1) && storeStation.tracksArray[storeStation.currentTrackIndex])
+  if 
+  (
+    (storeStation.currentTrackIndex !== -1) 
+    && 
+    (storeStation.tracksArray[storeStation.currentTrackIndex])
+  )
   {
     const track = storeStation.tracksArray[storeStation.currentTrackIndex]
     localStorage.setItem(('volume_track_' + track.id), value)

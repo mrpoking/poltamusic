@@ -33,7 +33,12 @@ export function deleteTrack(event, id)
   const oldTracksArraySize = storeStation.tracksArray.length
 
   let playNewTrackIndex = 0
-  if (isCurrentTrack && (oldTracksArraySize > 1))
+  if 
+  (
+    (isCurrentTrack)
+    &&
+    (oldTracksArraySize > 1)
+  )
   {
     let playOldTrackIndex
     if 
@@ -46,7 +51,7 @@ export function deleteTrack(event, id)
       const trackPosition = storeStation.shuffledTracksArray.indexOf(indexToDelete)
       if (trackPosition !== -1)
       {
-        const nextTrackPosition = ((trackPosition + 1) % storeStation.shuffledTrackArray.length)
+        const nextTrackPosition = ((trackPosition + 1) % storeStation.shuffledTracksArray.length)
         playOldTrackIndex = storeStation.shuffledTracksArray[nextTrackPosition]
       }
 
